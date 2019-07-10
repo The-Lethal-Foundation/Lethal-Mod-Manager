@@ -7,19 +7,11 @@ import (
 	"github.com/zserge/lorca"
 )
 
-func process() interface{} {
-	return map[string]string{
-		"hej": "hoj",
-	}
-}
-
 func main() {
 	ui, _ := lorca.New("", "", 480, 320)
 	// Bind Go function to be available in JS. Go function may be long-running and
 	// blocking - in JS it's represented with a Promise.
 	ui.Bind("add", func(a, b int) int { return a + b })
-	ui.Bind("logg", func(msg string) { fmt.Println(msg) })
-	ui.Bind("process", process)
 
 	addr, err := serve()
 	if err != nil {

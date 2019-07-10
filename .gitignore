@@ -10,8 +10,8 @@
 
 # production
 /build
-assets.go
-lorcatest
+/assets.go
+/app
 
 # misc
 .DS_Store

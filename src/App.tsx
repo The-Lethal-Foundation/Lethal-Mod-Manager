@@ -2,19 +2,18 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+// Functions bound from Lorca are available on the window object
 declare global {
   interface Window {
-    add: (a: number, b: number) => Promise<number>
-    process: () => Promise<any>
+    add: (a: number, b: number) => Promise<number>;
   }
 }
 
-window.process().then((obj) => {
-  console.log(obj)
-})
-
-function myAdd(a: number, b: number):number {
-  return a + b
+// Hack check to make silly App.test.tsx work
+if(window.add) {
+  window.add(40, 2).then( (result: number) => {
+    console.log(result);
+  });
 }
 
 const App: React.FC = () => {
