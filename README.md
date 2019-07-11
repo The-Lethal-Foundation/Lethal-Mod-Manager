@@ -1,6 +1,6 @@
 # lorca-ts-react-starter
 
-A starter project for building modern cross-platform desktop apps in Go + HTML + Typescript and React.
+A starter project for building modern cross-platform desktop apps in Go, HTML, Typescript and React.
 
 This is really nothing more than a [Typescript][3]-flavoured ["Create React App"][1]-bootstrapped app combined with a modified example from the fine ["Lorca"][2] project.
 
@@ -12,7 +12,7 @@ Check out those projects for how to use each component.
 
 ## Getting started
 
-Either just clone this repo and start coding, or repeat the simple steps taken to create it yourself to get that warm fuzzy feeling of having done it "by hand".
+Either just clone this repo and start coding, or repeat the simple steps taken to create it yourself to get that warm fuzzy feeling of having done it all "by hand".
 
 ### Prerequisites
 
@@ -30,10 +30,10 @@ Since this project builds on [Lorca][2], you need Chrome installed to develop an
 
 1. Create a React app with Typescript: `npx create-react-app <NEWPROJECTNAME> --typescript`
 1. Go to the newly created directory: `cd <NEWPROJECTNAME>`
-1. Initialize the Go part of the project: `go mod init <NEWPROJECTNAME>`
+1. Initialize the Go part of the project: `go mod init <APPNAME>`
 1. Copy the Go stub files from this project to your project
 1. Copy the `scripts` part from `package.json` to your project
-    1. Make sure to update the `BROWSER=./app` to the name of your "app"
+    1. Make sure to update the `BROWSER=./app` to `<APPNAME>` from above
 1. Install `npm-run-all` since the scripts need it: `npm install --save-dev npm-run-all`
 1. Launch the app in development mode: `npm start`
 1. Read the code and start building your app!
