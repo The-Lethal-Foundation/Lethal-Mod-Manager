@@ -20,7 +20,7 @@
     "go:generate": "go generate",
     "go:build": "go build",
     "go:test": "go test ./...",
-    "react:start": "BROWSER=./app react-scripts start",
+    "react:start": "BROWSER=./browser.js react-scripts start",
     "react:build": "react-scripts build",
     "react:test": "react-scripts test --coverage --watchAll=false"
   },

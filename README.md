@@ -33,7 +33,7 @@ Since this project builds on [Lorca][2], you need Chrome installed to develop an
 1. Initialize the Go part of the project: `go mod init <APPNAME>`
 1. Copy the Go stub files from this project to your project
 1. Copy the `scripts` part from `package.json` to your project
-    1. Make sure to update the `BROWSER=./app` to `<APPNAME>` from above
+1. Make sure to update `./app` in `browser.js` to `<APPNAME>` from above
 1. Install `npm-run-all` since the scripts need it: `npm install --save-dev npm-run-all`
 1. Launch the app in development mode: `npm start`
 1. Read the code and start building your app!
