@@ -12,7 +12,7 @@ const App: React.FC<AppProps> = (props: AppProps) => {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Editr <code>src/App.tsx</code> and save to reload!
+          Edit <code>src/App.tsx</code> and save to reload!
         </p>
         <p>
           Sum from Go: {props.sum}
