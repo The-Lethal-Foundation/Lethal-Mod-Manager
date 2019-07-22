@@ -20,7 +20,7 @@ Since this project builds on [Lorca][2], you need Chrome installed to develop an
 
 ### Cloning
 
-1. Clone this repo: `git clone --depth=1 https://github.com/erkkah/lorca-ts-react-starter/lorca-ts-react-starter.git <NEWPROJECTNAME>`
+1. Clone this repo: `git clone --depth=1 https://github.com/erkkah/lorca-ts-react-starter.git <NEWPROJECTNAME>`
 1. Go to the newly created directory: `cd <NEWPROJECTNAME>`
 1. Install dependencies: `npm install`
 1. Launch the app in development mode: `npm start`
