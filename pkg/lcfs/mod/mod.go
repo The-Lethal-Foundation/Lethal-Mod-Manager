@@ -1,6 +1,7 @@
 package mod
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -202,21 +203,11 @@ func LocalGetModManifest(profileName, exactModName string) (ModManifest, error) 
 		return ModManifest{}, fmt.Errorf("error getting profile path: %w", err)
 	}
 
-	// 1. Check if mod exists
 	modPath := filepath.Join(modsPath, exactModName)
 	if _, err := os.Stat(modPath); os.IsNotExist(err) {
 		return ModManifest{}, fmt.Errorf("mod does not exist: %s", modPath)
 	}
 
-	// 2. Read the mod's manifest file
-	// Manifest schema:
-	// {
-	// 	"name": string,
-	// 	"version_number": string,
-	// 	"website_url": string,
-	// 	"description": string,
-	// 	"dependencies": []string
-	// }
 	manifestPath := filepath.Join(modPath, "manifest.json")
 	manifestFile, err := os.Open(manifestPath)
 	if err != nil {
@@ -224,8 +215,26 @@ func LocalGetModManifest(profileName, exactModName string) (ModManifest, error) 
 	}
 	defer manifestFile.Close()
 
+	// Wrap the file reader in a bufio.Reader
+	reader := bufio.NewReader(manifestFile)
+
+	// Read the first few bytes for BOM
+	bom := make([]byte, 3)
+	_, err = reader.Read(bom)
+	if err != nil {
+		return ModManifest{}, fmt.Errorf("error reading file: %w", err)
+	}
+	if bom[0] != 0xEF || bom[1] != 0xBB || bom[2] != 0xBF {
+		// Not a BOM; reset the reader to the start of the file
+		_, err = manifestFile.Seek(0, 0)
+		if err != nil {
+			return ModManifest{}, fmt.Errorf("error seeking file: %w", err)
+		}
+		reader = bufio.NewReader(manifestFile)
+	}
+
 	manifest := ModManifest{}
-	err = json.NewDecoder(manifestFile).Decode(&manifest)
+	err = json.NewDecoder(reader).Decode(&manifest)
 	if err != nil {
 		return ModManifest{}, fmt.Errorf("error decoding manifest file: %w", err)
 	}

@@ -72,7 +72,7 @@ func LocalModOutdated(profile string, mod ModName) (bool, error) {
 
 		otherModManifest, err := LocalGetModManifest(profile, m)
 		if err != nil {
-			return false, fmt.Errorf("error getting mod manifest: %w", err)
+			continue
 		}
 		otherMod.Version = otherModManifest.VersionNumber
 

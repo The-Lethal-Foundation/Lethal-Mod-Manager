@@ -48,7 +48,6 @@ func InstallMod(profile string, mod ModName, installDepCallback ProgressCallback
 	}
 
 	if exists && !outdated {
-		fmt.Printf(" Mod %s already exists and is up to date\n", mod.Name)
 		return nil
 	}
 
