@@ -1,28 +1,29 @@
 package mod
 
 import (
-	"archive/zip"
 	"fmt"
-	"io"
 	"os"
 	"path/filepath"
 	"strings"
 
+	"github.com/KonstantinBelenko/lethal_mod_manager/pkg/lcfs/profile"
 	"github.com/nsf/termbox-go"
 )
 
 type ProgressCallback func(current, total int)
 
+type ModName struct {
+	Author  string
+	Name    string
+	Version string
+}
+
 func EnumMods(ProfileName string) ([]string, []string, error) {
 
-	// path = %AppData% / Roaming / Thunderstore Mod Manager / DataFolder / LethalCompany / profiles / ...
-	appDataPath := os.Getenv("APPDATA")
-	if appDataPath == "" {
-		return nil, nil, fmt.Errorf("APPDATA environment variable is not set")
-	}
+	profilePath, err := profile.GetProfilePath(ProfileName)
 
 	// 1. Check if the path exists
-	path := appDataPath + "\\Thunderstore Mod Manager\\DataFolder\\LethalCompany\\profiles\\" + ProfileName + "\\BepInEx\\plugins"
+	path := profilePath + "\\BepInEx\\plugins"
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		return nil, nil, fmt.Errorf("path does not exist: %s", path)
 	}
@@ -129,133 +130,37 @@ func filterMods(mods []string, query string) []string {
 	return filtered
 }
 
-func ZipMods(profile string, progressCallback ProgressCallback) error {
-	modPaths, _, err := EnumMods(profile)
-	if err != nil {
-		return fmt.Errorf("error enumerating mods: %w", err)
+// Converts a mod name string into a ModName struct
+func LocalParseModName(modName string) (ModName, error) {
+	// name consists of <author> ? optional -<name> ? optional -<version>
+	parts := strings.Split(modName, "-")
+	if len(parts) < 1 {
+		return ModName{}, fmt.Errorf("invalid mod name: %s", modName)
 	}
 
-	totalFiles, err := countTotalFiles(modPaths)
-	if err != nil {
-		return fmt.Errorf("error counting files: %w", err)
+	if len(parts) == 1 {
+		return ModName{
+			Name: parts[0],
+		}, nil
 	}
 
-	// Determine the path to the user's desktop
-	desktopPath, err := os.UserHomeDir()
-	if err != nil {
-		return fmt.Errorf("error getting user home directory: %w", err)
-	}
-	desktopPath = filepath.Join(desktopPath, "Desktop", "LethalCompanyMods.zip")
-
-	// Create a zip file
-	zipFile, err := os.Create(desktopPath)
-	if err != nil {
-		return fmt.Errorf("error creating zip file: %w", err)
-	}
-	defer zipFile.Close()
-
-	zipWriter := zip.NewWriter(zipFile)
-	defer zipWriter.Close()
-
-	// Add each mod file to the zip
-	var filesProcessed int
-	for _, modPath := range modPaths {
-		if err := addFileToZip(zipWriter, modPath, progressCallback, &filesProcessed, totalFiles); err != nil {
-			return fmt.Errorf("error adding file to zip: %w", err)
-		}
+	if len(parts) == 2 {
+		return ModName{
+			Author: parts[0],
+			Name:   parts[1],
+		}, nil
 	}
 
-	fmt.Printf("\nMods zipped successfully at: %s\n", desktopPath)
-	return nil
-}
+	return ModName{
+		Author:  parts[0],
+		Name:    parts[1],
+		Version: parts[2],
+	}, nil
 
-func countTotalFiles(paths []string) (int, error) {
-	var total int
-	for _, path := range paths {
-		err := filepath.Walk(path, func(_ string, info os.FileInfo, err error) error {
-			if err != nil {
-				return err
-			}
-			if !info.IsDir() {
-				total++
-			}
-			return nil
-		})
-		if err != nil {
-			return 0, err
-		}
-	}
-	return total, nil
 }
 
 func UpdateProgressBar(current, total int) {
 	printLoadingBar(current, total)
-}
-
-func addFileToZip(zipWriter *zip.Writer, filePath string, callback ProgressCallback, filesProcessed *int, totalFiles int) error {
-	info, err := os.Stat(filePath)
-	if err != nil {
-		return err
-	}
-
-	var baseDir string
-	if info.IsDir() {
-		baseDir = filepath.Base(filePath)
-	}
-
-	// Function to handle each file or directory
-	fileWalkFunc := func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		if info.IsDir() {
-			return nil // Skip directories
-		}
-
-		relPath := path
-		if baseDir != "" {
-			relPath, err = filepath.Rel(filePath, path)
-			if err != nil {
-				return err
-			}
-			relPath = filepath.Join(baseDir, relPath)
-		}
-
-		header, err := zip.FileInfoHeader(info)
-		if err != nil {
-			return err
-		}
-		header.Name = relPath
-		header.Method = zip.Deflate
-
-		writer, err := zipWriter.CreateHeader(header)
-		if err != nil {
-			return err
-		}
-
-		file, err := os.Open(path)
-		if err != nil {
-			return err
-		}
-		defer file.Close()
-
-		_, err = io.Copy(writer, file)
-		if err != nil {
-			return err
-		}
-
-		*filesProcessed++
-		if callback != nil {
-			callback(*filesProcessed, totalFiles)
-		}
-		return nil
-	}
-
-	if info.IsDir() {
-		return filepath.Walk(filePath, fileWalkFunc)
-	} else {
-		return fileWalkFunc(filePath, info, nil)
-	}
 }
 
 func printLoadingBar(current, total int) {
@@ -271,4 +176,13 @@ func printLoadingBar(current, total int) {
 		fmt.Print(" ")
 	}
 	fmt.Printf("] %d%%", int(progress*100))
+}
+
+func GetModsPath(profileName string) (string, error) {
+	profilePath, err := profile.GetProfilePath(profileName)
+	if err != nil {
+		return "", err
+	}
+
+	return profilePath + "\\BepInEx\\plugins", nil
 }

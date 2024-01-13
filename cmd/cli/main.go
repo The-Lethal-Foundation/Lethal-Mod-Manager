@@ -34,17 +34,29 @@ func main() {
 
 	// Provide user with list of commands
 	for {
-		fmt.Println("Enter command ('search mods', 'list mods', 'zip mods', or 'quit'):")
+		fmt.Println("Enter command ('install mod', 'search mods', 'list mods', 'zip mods', or 'quit'):")
 		reader := bufio.NewReader(os.Stdin)
 		command, _ := reader.ReadString('\n')
 		command = strings.TrimSpace(command)
 
 		switch command {
+		case "install mod":
+			modUrl, err := promptForMod()
+			if err != nil {
+				fmt.Println("Error prompting for mod:", err)
+				continue
+			}
+			err = mod.InstallModFromUrl(savedProfile, modUrl)
+			if err != nil {
+				fmt.Println("Error installing mod:", err)
+				continue
+			}
+			fmt.Println("Mod installed successfully")
 		case "list mods":
 			mod.ListMods(savedProfile)
 		case "quit":
 			return
-		case "search my mods":
+		case "search mods":
 			mod.SearchMods(savedProfile)
 		case "zip mods":
 			err := mod.ZipMods(savedProfile, mod.UpdateProgressBar)
@@ -55,6 +67,13 @@ func main() {
 			fmt.Println("Unknown command")
 		}
 	}
+}
+
+func promptForMod() (string, error) {
+	fmt.Print("Enter mod URL: ")
+	reader := bufio.NewReader(os.Stdin)
+	input, _ := reader.ReadString('\n')
+	return strings.TrimSpace(input), nil
 }
 
 func promptForProfile() (string, error) {

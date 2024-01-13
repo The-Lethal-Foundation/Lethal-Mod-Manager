@@ -20,5 +20,7 @@
 # Go workspace file
 go.work
 
-bin/*
+bin
 selected_profile.txt
+
+.vscode
