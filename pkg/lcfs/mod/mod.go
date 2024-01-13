@@ -1,6 +1,7 @@
 package mod
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -10,12 +11,20 @@ import (
 	"github.com/nsf/termbox-go"
 )
 
-type ProgressCallback func(current, total int)
+type ProgressCallback func(current, total int, title string)
 
 type ModName struct {
 	Author  string
 	Name    string
 	Version string
+}
+
+type ModManifest struct {
+	Name          string   `json:"name"`
+	VersionNumber string   `json:"version_number"`
+	WebsiteUrl    string   `json:"website_url"`
+	Description   string   `json:"description"`
+	Dependencies  []string `json:"dependencies"`
 }
 
 func EnumMods(ProfileName string) ([]string, []string, error) {
@@ -159,16 +168,16 @@ func LocalParseModName(modName string) (ModName, error) {
 
 }
 
-func UpdateProgressBar(current, total int) {
-	printLoadingBar(current, total)
+func UpdateProgressBar(current, total int, title string) {
+	printLoadingBar(current, total, title)
 }
 
-func printLoadingBar(current, total int) {
+func printLoadingBar(current, total int, title string) {
 	const barLength = 30
 	progress := float64(current) / float64(total)
 	filledLength := int(progress * float64(barLength))
 
-	fmt.Printf("\rZipping mods: [")
+	fmt.Printf("\r%s: [", title)
 	for i := 0; i < filledLength; i++ {
 		fmt.Print("=")
 	}
@@ -185,4 +194,41 @@ func GetModsPath(profileName string) (string, error) {
 	}
 
 	return profilePath + "\\BepInEx\\plugins", nil
+}
+
+func LocalGetModManifest(profileName, exactModName string) (ModManifest, error) {
+	modsPath, err := GetModsPath(profileName)
+	if err != nil {
+		return ModManifest{}, fmt.Errorf("error getting profile path: %w", err)
+	}
+
+	// 1. Check if mod exists
+	modPath := filepath.Join(modsPath, exactModName)
+	if _, err := os.Stat(modPath); os.IsNotExist(err) {
+		return ModManifest{}, fmt.Errorf("mod does not exist: %s", modPath)
+	}
+
+	// 2. Read the mod's manifest file
+	// Manifest schema:
+	// {
+	// 	"name": string,
+	// 	"version_number": string,
+	// 	"website_url": string,
+	// 	"description": string,
+	// 	"dependencies": []string
+	// }
+	manifestPath := filepath.Join(modPath, "manifest.json")
+	manifestFile, err := os.Open(manifestPath)
+	if err != nil {
+		return ModManifest{}, fmt.Errorf("error opening manifest file: %w", err)
+	}
+	defer manifestFile.Close()
+
+	manifest := ModManifest{}
+	err = json.NewDecoder(manifestFile).Decode(&manifest)
+	if err != nil {
+		return ModManifest{}, fmt.Errorf("error decoding manifest file: %w", err)
+	}
+
+	return manifest, nil
 }

@@ -11,14 +11,14 @@ import (
 	"strings"
 )
 
-func InstallModFromUrl(profile, modUrl string) error {
+func InstallModFromUrl(profile, modUrl string, installDepCallback ProgressCallback) error {
 	// 1. Parse mod url into namespace and name
 	mod, err := ParseModName(modUrl)
 	if err != nil {
 		return fmt.Errorf("error parsing mod name: %w", err)
 	}
 
-	err = InstallMod(profile, mod)
+	err = InstallMod(profile, mod, installDepCallback)
 	if err != nil {
 		return fmt.Errorf("error installing mod: %w", err)
 	}
@@ -27,7 +27,7 @@ func InstallModFromUrl(profile, modUrl string) error {
 }
 
 // Installs / updates the specified mod in the specified profile
-func InstallMod(profile string, mod ModName) error {
+func InstallMod(profile string, mod ModName, installDepCallback ProgressCallback) error {
 
 	// 1. Retrieve latest mod version
 	modInfo, err := GetModInfo(mod)
@@ -48,7 +48,7 @@ func InstallMod(profile string, mod ModName) error {
 	}
 
 	if exists && !outdated {
-		fmt.Printf("Mod %s already exists and is up to date\n", mod.Name)
+		fmt.Printf(" Mod %s already exists and is up to date\n", mod.Name)
 		return nil
 	}
 
@@ -59,9 +59,35 @@ func InstallMod(profile string, mod ModName) error {
 	}
 
 	// 4. Unzip mod to profile folder
-	err = UnzipMod(profile, zipName, mod)
+	newModName, err := UnzipMod(profile, zipName, mod)
+	if err != nil {
+		return fmt.Errorf("error unzipping mod: %w", err)
+	}
 
 	// 5. Go over the dependencies and install / update them
+	fmt.Printf("Installing dependencies for mod %s\n", mod.Name)
+	manifest, err := LocalGetModManifest(profile, newModName)
+	if err != nil {
+		return fmt.Errorf("error getting mod manifest: %w", err)
+	}
+
+	numberOfDeps := len(manifest.Dependencies)
+	numberOfDepsInstalled := 0
+	installDepCallback(0, numberOfDeps, "Installing dependencies")
+	for _, dep := range manifest.Dependencies {
+
+		depMod, err := LocalParseModName(dep)
+		if err != nil {
+			return fmt.Errorf("error parsing mod name: %w", err)
+		}
+		err = InstallMod(profile, depMod, installDepCallback)
+		if err != nil {
+			return fmt.Errorf("error installing dependency: %w", err)
+		}
+
+		numberOfDepsInstalled++
+		installDepCallback(numberOfDepsInstalled, numberOfDeps, "Installing dependencies")
+	}
 
 	return nil
 }

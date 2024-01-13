@@ -46,7 +46,7 @@ func main() {
 				fmt.Println("Error prompting for mod:", err)
 				continue
 			}
-			err = mod.InstallModFromUrl(savedProfile, modUrl)
+			err = mod.InstallModFromUrl(savedProfile, modUrl, mod.UpdateProgressBar)
 			if err != nil {
 				fmt.Println("Error installing mod:", err)
 				continue

@@ -121,7 +121,7 @@ func addFileToZip(zipWriter *zip.Writer, filePath string, callback ProgressCallb
 
 		*filesProcessed++
 		if callback != nil {
-			callback(*filesProcessed, totalFiles)
+			callback(*filesProcessed, totalFiles, "Zipping mods")
 		}
 		return nil
 	}
@@ -134,24 +134,26 @@ func addFileToZip(zipWriter *zip.Writer, filePath string, callback ProgressCallb
 }
 
 // UnzipMod unzips the mod file into the specified profile folder and removes the zip file.
-func UnzipMod(profileName, zipPath string, modName ModName) error {
+// Returns mod name and error
+func UnzipMod(profileName, zipPath string, modName ModName) (string, error) {
 	// Open the zip file
 	r, err := zip.OpenReader(zipPath)
 	if err != nil {
-		return fmt.Errorf("error opening zip file: %w", err)
+		return "", fmt.Errorf("error opening zip file: %w", err)
 	}
 	defer r.Close()
 
 	modsPath, err := GetModsPath(profileName)
 	fmt.Println(modsPath)
 	if err != nil {
-		return fmt.Errorf("error getting profile path: %w", err)
+		return "", fmt.Errorf("error getting profile path: %w", err)
 	}
 
 	// Create a target directory for the mod
-	modPath := filepath.Join(modsPath, fmt.Sprintf("%s-%s-%s", modName.Author, modName.Name, modName.Version))
+	newModDirName := fmt.Sprintf("%s-%s-%s", modName.Author, modName.Name, modName.Version)
+	modPath := filepath.Join(modsPath, newModDirName)
 	if err := os.MkdirAll(modPath, os.ModePerm); err != nil {
-		return fmt.Errorf("error creating mod directory: %w", err)
+		return "", fmt.Errorf("error creating mod directory: %w", err)
 	}
 
 	modsPath = modPath
@@ -161,13 +163,13 @@ func UnzipMod(profileName, zipPath string, modName ModName) error {
 		// Check and remove previous version if exists
 		targetPath := filepath.Join(modsPath, f.Name)
 		if err := os.RemoveAll(targetPath); err != nil {
-			return fmt.Errorf("error removing previous version of the mod: %w", err)
+			return "", fmt.Errorf("error removing previous version of the mod: %w", err)
 		}
 
 		// Create necessary directories
 		if f.FileInfo().IsDir() {
 			if err := os.MkdirAll(targetPath, os.ModePerm); err != nil {
-				return fmt.Errorf("error creating directory: %w", err)
+				return "", fmt.Errorf("error creating directory: %w", err)
 			}
 			continue
 		}
@@ -175,31 +177,26 @@ func UnzipMod(profileName, zipPath string, modName ModName) error {
 		// Open the file inside the zip
 		fileInZip, err := f.Open()
 		if err != nil {
-			return fmt.Errorf("error opening file in zip: %w", err)
+			return "", fmt.Errorf("error opening file in zip: %w", err)
 		}
 
 		// Create the file in the target directory
 		targetFile, err := os.OpenFile(targetPath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, f.Mode())
 		if err != nil {
 			fileInZip.Close()
-			return fmt.Errorf("error creating file: %w", err)
+			return "", fmt.Errorf("error creating file: %w", err)
 		}
 
 		// Copy the contents of the file
 		if _, err := io.Copy(targetFile, fileInZip); err != nil {
 			fileInZip.Close()
 			targetFile.Close()
-			return fmt.Errorf("error copying file contents: %w", err)
+			return "", fmt.Errorf("error copying file contents: %w", err)
 		}
 
 		fileInZip.Close()
 		targetFile.Close()
 	}
 
-	// Delete the temporary zip file
-	if err := os.Remove(zipPath); err != nil {
-		return fmt.Errorf("error deleting temp zip file: %w", err)
-	}
-
-	return nil
+	return newModDirName, nil
 }
