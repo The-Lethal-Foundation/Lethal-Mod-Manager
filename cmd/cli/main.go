@@ -34,7 +34,7 @@ func main() {
 
 	// Provide user with list of commands
 	for {
-		fmt.Println("Enter command ('search my mods', 'list mods', or 'quit'):")
+		fmt.Println("Enter command ('search mods', 'list mods', 'zip mods', or 'quit'):")
 		reader := bufio.NewReader(os.Stdin)
 		command, _ := reader.ReadString('\n')
 		command = strings.TrimSpace(command)
@@ -46,6 +46,11 @@ func main() {
 			return
 		case "search my mods":
 			mod.SearchMods(savedProfile)
+		case "zip mods":
+			err := mod.ZipMods(savedProfile, mod.UpdateProgressBar)
+			if err != nil {
+				fmt.Println("Error zipping mods:", err)
+			}
 		default:
 			fmt.Println("Unknown command")
 		}
