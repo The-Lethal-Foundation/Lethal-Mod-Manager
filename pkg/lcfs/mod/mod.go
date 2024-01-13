@@ -123,7 +123,7 @@ func printMods(mods []string, query string) {
 	filteredMods := filterMods(mods, query)
 	for i, mod := range filteredMods {
 		for j, ch := range mod {
-			termbox.SetCell(j, i+2, ch, termbox.ColorDefault, termbox.ColorDefault) // +2 to account for the query and instruction messages
+			termbox.SetCell(j, i+3, ch, termbox.ColorDefault, termbox.ColorDefault) // +2 to account for the query and instruction messages
 		}
 	}
 

@@ -51,7 +51,7 @@ func main() {
 				fmt.Println("Error installing mod:", err)
 				continue
 			}
-			fmt.Println("Mod installed successfully")
+			fmt.Println("\nMod installed successfully")
 		case "list mods":
 			mod.ListMods(savedProfile)
 		case "quit":
