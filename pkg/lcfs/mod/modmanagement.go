@@ -6,9 +6,18 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+
+	"github.com/KonstantinBelenko/lethal_mod_manager/pkg/lcfs/util"
+	types "github.com/KonstantinBelenko/lethal_mod_manager/pkg/types"
 )
 
-func ZipMods(profile string, progressCallback ProgressCallback) error {
+/*
+	modmanagement.go
+
+	Contains functions for mod operations such as installing, updating, checking mods and more.
+*/
+
+func ZipMods(profile string, progressCallback types.ProgressCallback) error {
 	modPaths, _, err := EnumMods(profile)
 	if err != nil {
 		return fmt.Errorf("error enumerating mods: %w", err)
@@ -67,7 +76,7 @@ func countTotalFiles(paths []string) (int, error) {
 	return total, nil
 }
 
-func addFileToZip(zipWriter *zip.Writer, filePath string, callback ProgressCallback, filesProcessed *int, totalFiles int) error {
+func addFileToZip(zipWriter *zip.Writer, filePath string, callback types.ProgressCallback, filesProcessed *int, totalFiles int) error {
 	info, err := os.Stat(filePath)
 	if err != nil {
 		return err
@@ -135,7 +144,7 @@ func addFileToZip(zipWriter *zip.Writer, filePath string, callback ProgressCallb
 
 // UnzipMod unzips the mod file into the specified profile folder and removes the zip file.
 // Returns mod name and error
-func UnzipMod(profileName, zipPath string, modName ModName) (string, error) {
+func UnzipMod(profileName, zipPath string, modName types.ModName) (string, error) {
 	// Open the zip file
 	r, err := zip.OpenReader(zipPath)
 	if err != nil {
@@ -143,7 +152,7 @@ func UnzipMod(profileName, zipPath string, modName ModName) (string, error) {
 	}
 	defer r.Close()
 
-	modsPath, err := GetModsPath(profileName)
+	modsPath, err := util.GetModsPath(profileName)
 	fmt.Println(modsPath)
 	if err != nil {
 		return "", fmt.Errorf("error getting profile path: %w", err)

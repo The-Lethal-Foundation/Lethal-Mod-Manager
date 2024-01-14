@@ -8,7 +8,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/KonstantinBelenko/lethal_mod_manager/pkg/lcfs/mod"
 	"github.com/KonstantinBelenko/lethal_mod_manager/pkg/lcfs/profile"
 )
 
@@ -32,7 +31,6 @@ func main() {
 
 	fmt.Printf("Using profile: %s\n", savedProfile)
 
-	// Provide user with list of commands
 	for {
 		fmt.Println("Enter command ('install mod', 'search mods', 'list mods', 'zip mods', or 'quit'):")
 		reader := bufio.NewReader(os.Stdin)
@@ -41,28 +39,15 @@ func main() {
 
 		switch command {
 		case "install mod":
-			modUrl, err := promptForMod()
-			if err != nil {
-				fmt.Println("Error prompting for mod:", err)
-				continue
-			}
-			err = mod.InstallModFromUrl(savedProfile, modUrl, mod.UpdateProgressBar)
-			if err != nil {
-				fmt.Println("Error installing mod:", err)
-				continue
-			}
-			fmt.Println("\nMod installed successfully")
+			CLI_InstallMod(savedProfile)
 		case "list mods":
-			mod.ListMods(savedProfile)
+			CLI_ListMods(savedProfile)
+		case "search mods":
+			CLI_SearchMods(savedProfile)
+		case "zip mods":
+			CLI_ZipMods(savedProfile)
 		case "quit":
 			return
-		case "search mods":
-			mod.SearchMods(savedProfile)
-		case "zip mods":
-			err := mod.ZipMods(savedProfile, mod.UpdateProgressBar)
-			if err != nil {
-				fmt.Println("Error zipping mods:", err)
-			}
 		default:
 			fmt.Println("Unknown command")
 		}
