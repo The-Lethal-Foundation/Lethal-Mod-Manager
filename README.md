@@ -17,15 +17,14 @@ The application acts as a faster / ligter version of the thunderstore mod manage
 
 Before you begin, ensure you have the following installed:
 
-Go (version 1.20 or later)
-Git (for cloning the repository)
+*. Go (version 1.20 or later)
+*. Git (for cloning the repository)
 
 ## Installation
 
 Clone the Repository:
 
 ```sh
-Copy code
 git clone https://github.com/KonstantinBelenko/lethal-mod-manager.git
 cd lethalmodmanager
 ```
@@ -33,7 +32,6 @@ cd lethalmodmanager
 Build the Project (Only for windows):
 
 ```sh
-Copy code
 build_windows.bat
 ```
 
