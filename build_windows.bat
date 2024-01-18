@@ -8,7 +8,7 @@ SET APPS=app cli
 
 FOR %%a IN (%APPS%) DO (
     ECHO Building %%a...
-    go build -o "%BIN_DIR%\%%a.exe" %CD%\cmd\%%a
+    go build -ldflags "-H windowsgui" -o "%BIN_DIR%\%%a.exe" %CD%\cmd\%%a
 )
 
 ECHO Build complete.
