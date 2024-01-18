@@ -28,7 +28,7 @@ Clone the Repository:
 Copy code
 git clone https://github.com/KonstantinBelenko/lethal-mod-manager.git
 cd lethalmodmanager
-``````
+```
 
 Build the Project (Only for windows):
 
