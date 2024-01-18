@@ -10,6 +10,7 @@ import (
 	"os/signal"
 	"sync"
 
+	"github.com/KonstantinBelenko/lethal_mod_manager/pkg/lcfs/mod"
 	"github.com/KonstantinBelenko/lethal_mod_manager/pkg/lcfs/profile"
 	"github.com/zserge/lorca"
 )
@@ -56,6 +57,14 @@ func main() {
 			log.Fatal(err)
 		}
 		return profiles
+	})
+
+	ui.Bind("getMods", func(profile string) []string {
+		_, mods, err := mod.EnumMods(profile)
+		if err != nil {
+			log.Fatal(err)
+		}
+		return mods
 	})
 
 	ui.Bind("setProfile", func(profile string) {

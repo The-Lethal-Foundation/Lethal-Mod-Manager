@@ -1,25 +1,24 @@
 <!doctype html>
 <html>
 	<head>
-		<title>Lethal Mod Manager - PROFILE TITLE HERE</title>
+		<title>Lethal Mod Manager - Mods</title>
 		<link rel="shortcut icon" href="favicon.png">
 		<script src="https://cdn.tailwindcss.com"></script>
 	</head>
 	<body onload=start()>
-
-        <header>
-            <!-- Back to profiles button -->
-            <a href="index.html" class="">Back to profiles</a>
-
-            <!-- Name of the current profile -->
-            <h2 class="" id="profile-title">Loading...</h2>
-        </header>
-
 		<main class="bg-[#f1c40f] w-[100vw] h-[100vh] flex flex-col gap-4">
-            
+
+            <header class="w-full flex gap-4 items-center p-4">
+                <!-- Back to profiles button -->
+                <a href="index.html" class="text-xl"><<</a>
+    
+                <!-- Name of the current profile -->
+                <h2 class="" id="profile-title">Loading...</h2>
+            </header>
+
             <!-- List of mods -->
-            <div class="w-full flex flex-col gap-2 items-center" id="mod-list">
-                <!-- <button class="bg-[#2ecc71] text-white font-bold py-2 px-4 rounded">Mod 1</button> -->
+            <div class="w-full flex flex-col gap-4 items-center p-4 overflow-y-scroll" id="mod-list">
+
             </div>
 		</main>
 
@@ -29,6 +28,36 @@
                 document.getElementById("profile-title").innerText = title;
             }
 
+            function createbutton(modName, modImageUrl = "https://montevista.greatheartsamerica.org/wp-content/uploads/sites/2/2016/11/default-placeholder.png") {
+                // <div class="flex w-[400px] h-[200px] gap-2">
+                //     <!-- square image -->
+                //     <img src="https://montevista.greatheartsamerica.org/wp-content/uploads/sites/2/2016/11/default-placeholder.png" alt="mod image" class="w-[100px] h-[100px]">
+                //     <!-- Title -->
+                //     <h3 class="text-xl font-bold">Mod Name</h3>
+                // </div>
+
+                const div = document.createElement("div");
+                div.classList.add("flex")
+                div.classList.add("w-[400px]")
+                div.classList.add("h-[200px]")
+                div.classList.add("gap-2")
+
+                const img = document.createElement("img");
+                img.src = modImageUrl;
+                img.alt = "mod image";
+                img.classList.add("w-[100px]")
+                img.classList.add("h-[100px]")
+                div.appendChild(img);
+
+                const h3 = document.createElement("h3");
+                h3.innerText = modName;
+                h3.classList.add("text-xl")
+                h3.classList.add("font-bold")
+                div.appendChild(h3);
+
+                return div
+            }
+
 			document.addEventListener("DOMContentLoaded", async function(event) {
                 const domItems = {
                     profileTitle: document.getElementById("profile-title"),
@@ -36,7 +65,16 @@
                 };
 
                 const selectedProfile = await getSelectedProfile();
-                setTitle(selectedProfile);
+                const mods = await getMods(selectedProfile);
+
+                setTitle(selectedProfile + ` | ${mods.length} mods`);
+
+                for (let i = 0; i < mods.length; i++) {
+                    const modName = mods[i];
+                    const btn = createbutton(modName)
+
+                    domItems.modList.appendChild(btn);
+                }
 			});
 		</script>
 	</body>
