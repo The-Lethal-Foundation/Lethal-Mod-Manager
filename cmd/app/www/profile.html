@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Lethal Mod Manager - PROFILE TITLE HERE</title>
+		<link rel="shortcut icon" href="favicon.png">
+		<script src="https://cdn.tailwindcss.com"></script>
+	</head>
+	<body onload=start()>
+
+        <header>
+            <!-- Back to profiles button -->
+            <a href="index.html" class="">Back to profiles</a>
+
+            <!-- Name of the current profile -->
+            <h2 class="" id="profile-title">Loading...</h2>
+        </header>
+
+		<main class="bg-[#f1c40f] w-[100vw] h-[100vh] flex flex-col gap-4">
+            
+            <!-- List of mods -->
+            <div class="w-full flex flex-col gap-2 items-center" id="mod-list">
+                <!-- <button class="bg-[#2ecc71] text-white font-bold py-2 px-4 rounded">Mod 1</button> -->
+            </div>
+		</main>
+
+		<script>
+
+            function setTitle(title) {
+                document.getElementById("profile-title").innerText = title;
+            }
+
+			document.addEventListener("DOMContentLoaded", async function(event) {
+                const domItems = {
+                    profileTitle: document.getElementById("profile-title"),
+                    modList: document.getElementById("mod-list")
+                };
+
+                const selectedProfile = await getSelectedProfile();
+                setTitle(selectedProfile);
+			});
+		</script>
+	</body>
+</html>

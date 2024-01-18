@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Lethal Mod Manager - Choose Profile</title>
+		<link rel="shortcut icon" href="favicon.png">
+		<script src="https://cdn.tailwindcss.com"></script>
+	</head>
+	<body onload=start()>
+
+		<main class="bg-[#f1c40f] w-[100vw] h-[100vh] flex flex-col gap-4 justify-center items-center">
+
+			<h2 class="text-xl font-bold">Choose Profile</h2>
+
+			<div class="w-full flex flex-col gap-2 items-center" id="profile-list">
+			</div>
+
+		</main>
+
+		<!-- UI layout -->
+		<!-- <div class="counter-container">
+			<div class="counter"></div>
+			<div class="btn-row">
+				<div class="btn btn-incr">+1</div>
+				<div class="btn btn-decr">-1</div>
+			</div>
+		</div> -->
+
+		<!-- Connect UI actions to Go functions -->
+		<!-- <script>
+			const counter = document.querySelector('.counter');
+			const btnIncr = document.querySelector('.btn-incr');
+			const btnDecr = document.querySelector('.btn-decr');
+
+			// We use async/await because Go functions are asynchronous
+			const render = async () => {
+				counter.innerText = `Count: ${await window.counterValue()}`;
+			};
+
+			btnIncr.addEventListener('click', async () => {
+				await counterAdd(1); // Call Go function
+				render();
+			});
+
+			btnDecr.addEventListener('click', async () => {
+				await counterAdd(-1); // Call Go function
+				render();
+			});
+
+			render();
+		</script> -->
+
+		<script>
+			document.addEventListener("DOMContentLoaded", async function(event) {
+				const profiles = await getProfiles();
+				const profileList = document.getElementById("profile-list");
+				for (let i = 0; i < profiles.length; i++) {
+					const profile = profiles[i];
+					const btn = document.createElement("button");
+
+					// add styles
+					btn.classList.add("text-md");
+					btn.classList.add("hover:scale-110");
+					btn.classList.add("hover:text-gray-800");
+					btn.classList.add("transition-all");
+					btn.classList.add("duration-150");
+					btn.classList.add("ease-in-out");
+
+					btn.innerText = profile;
+					btn.addEventListener("click", async () => {
+						await setProfile(profile);
+					});
+					profileList.appendChild(btn);
+				}
+			});
+		</script>
+	</body>
+</html>
