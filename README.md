@@ -14,7 +14,7 @@ The application acts as a faster / ligter version of the thunderstore mod manage
 
 ## How to install 
 
-Just go to the [releases page](https://github.com/KonstantinBelenko/lethal-mod-manager/releases/tag/v0.0.2) and install & run the latest one.
+Just go to the [releases page](https://github.com/KonstantinBelenko/lethal-mod-manager/releases) and install & run the latest one.
 
 To install any mod, just copy & paste the link to the mod's page on thunderstorm and paste it in.
 
