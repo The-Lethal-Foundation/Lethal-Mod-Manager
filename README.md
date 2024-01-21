@@ -11,6 +11,7 @@ The application acts as a faster / ligter version of the thunderstore mod manage
 - Enable / disable mods.
 - Automatic mod updates.
 - Syncronize mods with your friends.
+- Malware flags.
 
 ## How to install 
 
