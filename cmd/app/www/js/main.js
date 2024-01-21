@@ -1,8 +1,10 @@
+var activeProfile = null;
+
 /**
-		 * Creates a profile button component
-		 * @param {string} name - The name of the profile
-		 * @returns {HTMLButtonElement} The profile button
-		 */
+ * Creates a profile button component
+ * @param {string} name - The name of the profile
+ * @returns {HTMLButtonElement} The profile button
+ */
 function DOMCreateProfileButton(name) {
     const button = document.createElement("button");
     button.classList.add("text-sm", "border", "shadow-sm", "font-medium", "ring-offset-background", "transition-colors", "focus-visible:outline-none", "focus-visible:ring-2", "focus-visible:ring-ring", "focus-visible:ring-offset-2", "disabled:pointer-events-none", "disabled:opacity-50", "bg-[#ffffff]", "text-black", "hover:bg-[#f4f4f5]", "rounded-md");
@@ -28,6 +30,7 @@ function DOMDisableProfile(index) {
         button.disabled = false
     }
 
+    activeProfile = buttons[index].innerText
     buttons[index].disabled = true
 }
 
@@ -51,6 +54,7 @@ async function DOMUpdateProfiles() {
     }
 
     DOMDisableProfile(0)
+    activeProfile = profiles[0]
     return {
         buttons,
         activeProfile: profiles[0]
@@ -86,7 +90,6 @@ function DOMCreateModCard(mod) {
 }
 
 
-
 /**
  * Lists all mods for profile
  * @param {string} profile - The name of the profile
@@ -115,8 +118,14 @@ document.addEventListener("DOMContentLoaded", async function (event) {
     const mods = await DOMUpdateMods(activeProfile);
 });
 
-document.getElementById("install-new-mod").addEventListener("click", () => {
+document.getElementById("install-new-mod").addEventListener("click", async () => {
     const modUrl = prompt("Enter the URL of the mod you want to install")
+    if (!modUrl) return
+
+    const installModResponse = await installMod(activeProfile, modUrl)
+    alert(installModResponse)
+    
+    await DOMUpdateMods(activeProfile)
 })
 
 document.getElementById("mod-search").addEventListener("input", () => {
