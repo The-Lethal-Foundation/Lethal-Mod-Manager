@@ -8,10 +8,15 @@ The application acts as a faster / ligter version of the thunderstore mod manage
 
 ## Planned Features
 
-- Install / update mods for Lethal Company
-- Zip & Share mods with other users.
-- Quickly filter mods by text search.
 - Enable / disable mods.
+- Automatic mod updates.
+- Syncronize mods with your friends.
+
+## How to install 
+
+Just go to the [releases page](https://github.com/KonstantinBelenko/lethal-mod-manager/releases/tag/v0.0.2) and install & run the latest one.
+
+To install any mod, just copy & paste the link to the mod's page on thunderstorm and paste it in.
 
 ## Development prerequisites
 
@@ -34,14 +39,6 @@ Build the Project (Only for windows):
 ```sh
 build_windows.bat
 ```
-
-## Usage
-
-After building, you can start using the application or CLI to manage mods for Lethal Company.
-
-Run the application to access the GUI for mod management.
-
-Use the CLI for command-line operations and scripting.
 
 ## Contributing
 
