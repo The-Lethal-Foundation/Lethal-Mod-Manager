@@ -1,77 +1,189 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-	<head>
-		<title>Lethal Mod Manager - Choose Profile</title>
-		<link rel="shortcut icon" href="favicon.png">
-		<script src="https://cdn.tailwindcss.com"></script>
-	</head>
-	<body onload=start()>
+  <head>
+    <title>Lethal Mod Manager - Choose Profile</title>
+    <link rel="shortcut icon" href="favicon.png" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body onload="start()">
+    <div class="grid min-h-screen w-full lg:grid-cols-[280px_1fr]">
+      <div class="hidden border-r bg-gray-100/40 lg:block">
+        <div class="flex h-full max-h-screen flex-col gap-2">
+          <div class="flex h-[60px] items-center border-b px-6">
+            <div class="flex items-center gap-2 font-semibold" href="#">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="h-6 w-6"
+              >
+                <path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"></path>
+                <path
+                  d="m3 9 2.45-4.9A2 2 0 0 1 7.24 3h9.52a2 2 0 0 1 1.8 1.1L21 9"
+                ></path>
+                <path d="M12 3v6"></path>
+              </svg>
+              <span class="">Lethal Mod Manager</span>
+            </div>
+          </div>
+          <div class="flex-1 overflow-auto py-2">
+			<nav class="grid gap-2 items-start px-4 text-sm font-medium">
+				Profiles
+			</nav>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col">
+        <header
+          class="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6"
+        >
+          <a class="lg:hidden" href="#">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="h-6 w-6"
+            >
+              <path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"></path>
+              <path
+                d="m3 9 2.45-4.9A2 2 0 0 1 7.24 3h9.52a2 2 0 0 1 1.8 1.1L21 9"
+              ></path>
+              <path d="M12 3v6"></path>
+            </svg>
+            <span class="sr-only">Home</span>
+          </a>
+          <div class="w-full flex-1">
+            <form>
+              <div class="relative">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500 dark:text-gray-400"
+                >
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <path d="m21 21-4.3-4.3"></path>
+                </svg>
+                <input
+				  id="mod-search"
+                  class="flex h-10 rounded-md border border-input px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 w-full bg-white shadow-none appearance-none pl-8 md:w-2/3 lg:w-1/3"
+                  placeholder="Search mods..."
+                  type="search"
+                />
+              </div>
+            </form>
+          </div>
+        </header>
+        <main class="max-h-[550px] overflow-y-auto flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
+          <div class="flex items-center">
+            <h1 class="font-semibold text-lg md:text-2xl">Mods</h1>
+            <button
+			  id="install-new-mod"
+              class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-[#161617] text-white hover:bg-[#2F2F31] h-9 rounded-md px-3 ml-auto"
+            >
+              Install new mod
+            </button>
+          </div>
+          <div id="mod-list" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div
+              class="rounded-lg border bg-card text-card-foreground shadow-sm"
+              data-v0-t="card"
+            >
+              <div class="p-6 flex flex-col gap-4">
+                <img
+                  alt="Mod Image"
+                  class="aspect-square object-cover border border-gray-200 w-full rounded-lg overflow-hidden dark:border-gray-800"
+                  height="200"
+                  src="placeholder.svg"
+                  width="200"
+                />
+                <h3 class="font-semibold">Mod Name</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                  This is a description of the mod. It includes details about
+                  what the mod does and how it changes the game.
+                </p>
+              </div>
+            </div>
+            <div
+              class="rounded-lg border bg-card text-card-foreground shadow-sm"
+              data-v0-t="card"
+            >
+              <div class="p-6 flex flex-col gap-4">
+                <img
+                  alt="Mod Image"
+                  class="aspect-square object-cover border border-gray-200 w-full rounded-lg overflow-hidden dark:border-gray-800"
+                  height="200"
+                  src="placeholder.svg"
+                  width="200"
+                />
+                <h3 class="font-semibold">Mod Name</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                  This is a description of the mod. It includes details about
+                  what the mod does and how it changes the game.
+                </p>
+              </div>
+            </div>
+            <div
+              class="rounded-lg border bg-card text-card-foreground shadow-sm"
+              data-v0-t="card"
+            >
+              <div class="p-6 flex flex-col gap-4">
+                <img
+                  alt="Mod Image"
+                  class="aspect-square object-cover border border-gray-200 w-full rounded-lg overflow-hidden dark:border-gray-800"
+                  height="200"
+                  src="placeholder.svg"
+                  width="200"
+                />
+                <h3 class="font-semibold">Mod Name</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                  This is a description of the mod. It includes details about
+                  what the mod does and how it changes the game.
+                </p>
+              </div>
+            </div>
+			<div
+              class="rounded-lg border bg-card text-card-foreground shadow-sm"
+              data-v0-t="card"
+            >
+              <div class="p-6 flex flex-col gap-4">
+                <img
+                  alt="Mod Image"
+                  class="aspect-square object-cover border border-gray-200 w-full rounded-lg overflow-hidden dark:border-gray-800"
+                  height="200"
+                  src="placeholder.svg"
+                  width="200"
+                />
+                <h3 class="font-semibold">Mod Name</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                  This is a description of the mod. It includes details about
+                  what the mod does and how it changes the game.
+                </p>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
 
-		<main class="bg-[#f1c40f] w-[100vw] h-[100vh] flex flex-col gap-4 justify-center items-center">
-
-			<h2 class="text-xl font-bold">Choose Profile</h2>
-
-			<div class="w-full flex flex-col gap-2 items-center" id="profile-list">
-			</div>
-
-		</main>
-
-		<!-- UI layout -->
-		<!-- <div class="counter-container">
-			<div class="counter"></div>
-			<div class="btn-row">
-				<div class="btn btn-incr">+1</div>
-				<div class="btn btn-decr">-1</div>
-			</div>
-		</div> -->
-
-		<!-- Connect UI actions to Go functions -->
-		<!-- <script>
-			const counter = document.querySelector('.counter');
-			const btnIncr = document.querySelector('.btn-incr');
-			const btnDecr = document.querySelector('.btn-decr');
-
-			// We use async/await because Go functions are asynchronous
-			const render = async () => {
-				counter.innerText = `Count: ${await window.counterValue()}`;
-			};
-
-			btnIncr.addEventListener('click', async () => {
-				await counterAdd(1); // Call Go function
-				render();
-			});
-
-			btnDecr.addEventListener('click', async () => {
-				await counterAdd(-1); // Call Go function
-				render();
-			});
-
-			render();
-		</script> -->
-
-		<script>
-			document.addEventListener("DOMContentLoaded", async function(event) {
-				const profiles = await getProfiles();
-				const profileList = document.getElementById("profile-list");
-				for (let i = 0; i < profiles.length; i++) {
-					const profile = profiles[i];
-					const btn = document.createElement("button");
-
-					// add styles
-					btn.classList.add("text-md");
-					btn.classList.add("hover:scale-110");
-					btn.classList.add("hover:text-gray-800");
-					btn.classList.add("transition-all");
-					btn.classList.add("duration-150");
-					btn.classList.add("ease-in-out");
-
-					btn.innerText = profile;
-					btn.addEventListener("click", async () => {
-						await setProfile(profile);
-					});
-					profileList.appendChild(btn);
-				}
-			});
-		</script>
-	</body>
+    <script src="./js/main.js"></script>
+  </body>
 </html>

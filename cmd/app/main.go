@@ -25,7 +25,7 @@ type context struct {
 
 func main() {
 	// Create UI with basic HTML passed via data URI
-	ui, err := lorca.New("", "", 800, 650, "--remote-allow-origins=*")
+	ui, err := lorca.New("", "", 1080, 650, "--remote-allow-origins=*")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -44,8 +44,10 @@ func main() {
 		log.Fatal(err)
 	}
 	defer ln.Close()
+
 	go http.Serve(ln, http.FileServer(http.FS(fs)))
 	ui.Load(fmt.Sprintf("http://%s/www", ln.Addr()))
+	// ui.Load("data:text/html,file://C:\\Users\\Tractor\\Desktop\\sideprojects\\my-thunderstoremm\\www\\index.html")
 
 	ui.Bind("start", func() {
 		log.Println("UI is ready")
@@ -59,11 +61,40 @@ func main() {
 		return profiles
 	})
 
-	ui.Bind("getMods", func(profile string) []string {
-		_, mods, err := mod.EnumMods(profile)
+	ui.Bind("getMods", func(profile string) []GetModsResponse {
+		_, modNames, err := mod.EnumMods(profile)
 		if err != nil {
 			log.Fatal(err)
 		}
+
+		// Go over each mod and grab manifest if it exists
+		mods := []GetModsResponse{}
+		for _, modName := range modNames {
+			parsedModName, err := mod.LocalParseModName(modName)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			hasManifest, err := mod.LocalModHasManifest(profile, modName)
+			if err != nil {
+				log.Fatal(err)
+			}
+			if hasManifest {
+				manifest, err := mod.LocalGetModManifest(profile, modName)
+				if err != nil {
+					log.Fatal(err)
+				}
+
+				mods = append(mods, GetModsResponse{
+					ModName:        manifest.Name,
+					ModAuthor:      parsedModName.Author,
+					ModVersion:     manifest.VersionNumber,
+					ModDescription: manifest.Description,
+					ModPicture:     "placeholder.svg",
+				})
+			}
+		}
+
 		return mods
 	})
 
@@ -79,6 +110,11 @@ func main() {
 		ctx.Lock()
 		defer ctx.Unlock()
 		return ctx.selectedProfile
+	})
+
+	// Bind Ctr+R to reload current page
+	ui.Bind("reload", func() {
+		ui.Load(fmt.Sprintf("http://%s/www", ln.Addr()))
 	})
 
 	// You may use console.log to debug your JS code, it will be printed via

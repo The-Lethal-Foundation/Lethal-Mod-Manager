@@ -100,3 +100,22 @@ func LocalGetModManifest(profileName, exactModName string) (ModManifest, error) 
 
 	return manifest, nil
 }
+
+func LocalModHasManifest(profileName, exactModName string) (bool, error) {
+	modsPath, err := util.GetModsPath(profileName)
+	if err != nil {
+		return false, fmt.Errorf("error getting profile path: %w", err)
+	}
+
+	modPath := filepath.Join(modsPath, exactModName)
+	if _, err := os.Stat(modPath); os.IsNotExist(err) {
+		return false, fmt.Errorf("mod does not exist: %s", modPath)
+	}
+
+	manifestPath := filepath.Join(modPath, "manifest.json")
+	if _, err := os.Stat(manifestPath); os.IsNotExist(err) {
+		return false, nil
+	}
+
+	return true, nil
+}
