@@ -5,6 +5,7 @@
  * @property {string} mod_version - The version of the mod
  * @property {string} mod_description - The description of the mod
  * @property {string} mod_picture - The picture of the mod
+ * @property {string} mod_path_name - The path name of the mod
  */
 
 /**

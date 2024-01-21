@@ -6,4 +6,5 @@ type GetModsResponse struct {
 	ModVersion     string `json:"mod_version"`
 	ModDescription string `json:"mod_description"`
 	ModPicture     string `json:"mod_picture"`
+	ModPathName    string `json:"mod_path_name"`
 }

@@ -209,3 +209,21 @@ func UnzipMod(profileName, zipPath string, modName types.ModName) (string, error
 
 	return newModDirName, nil
 }
+
+func DeleteMod(profileName, modName string) error {
+	modsPath, err := util.GetModsPath(profileName)
+	if err != nil {
+		return fmt.Errorf("error getting profile path: %w", err)
+	}
+
+	modPath := filepath.Join(modsPath, modName)
+	if _, err := os.Stat(modPath); os.IsNotExist(err) {
+		return fmt.Errorf("mod does not exist: %s", modPath)
+	}
+
+	if err := os.RemoveAll(modPath); err != nil {
+		return fmt.Errorf("error deleting mod: %w", err)
+	}
+
+	return nil
+}

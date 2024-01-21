@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Lethal Mod Manager - Choose Profile</title>
-    <link rel="shortcut icon" href="favicon.png" />
+    <title>Lethal Mod Manager</title>
+	<meta charset="utf-8">
+
+	<link rel="icon" type="image/x-icon" href="favicon.ico"> 
+	<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body onload="start()">
@@ -94,7 +99,7 @@
         </header>
         <main class="max-h-[550px] overflow-y-auto flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
           <div class="flex items-center">
-            <h1 class="font-semibold text-lg md:text-2xl">Mods</h1>
+            <h1 id="mods-tab-title" class="font-semibold text-lg md:text-2xl">Mods</h1>
             <button
 			  id="install-new-mod"
               class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-[#161617] text-white hover:bg-[#2F2F31] h-9 rounded-md px-3 ml-auto"
@@ -102,7 +107,7 @@
               Install new mod
             </button>
           </div>
-          <div id="mod-list" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div id="mod-list" class="grid gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
             <div
               class="rounded-lg border bg-card text-card-foreground shadow-sm"
               data-v0-t="card"

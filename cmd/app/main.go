@@ -49,8 +49,6 @@ func main() {
 	// Use the mux in the HTTP server
 	go http.Serve(ln, mux)
 
-	// go http.Serve(ln, http.FileServer(http.FS(fs)))
-
 	// Setup UI
 	ui.Load(fmt.Sprintf("http://%s/www/www", ln.Addr()))
 
@@ -96,6 +94,7 @@ func main() {
 					ModVersion:     manifest.VersionNumber,
 					ModDescription: manifest.Description,
 					ModPicture:     fmt.Sprintf("http://%s/images/%s/BepInEx/plugins/%s/icon.png", ln.Addr(), profile, modName),
+					ModPathName:    modName,
 				})
 			}
 		}
@@ -119,6 +118,14 @@ func main() {
 	// Bind Ctr+R to reload current page
 	ui.Bind("reload", func() {
 		ui.Load(fmt.Sprintf("http://%s/www", ln.Addr()))
+	})
+
+	ui.Bind("deleteMod", func(profile string, modName string) string {
+		err := mod.DeleteMod(profile, modName)
+		if err != nil {
+			return err.Error()
+		}
+		return "Success"
 	})
 
 	// Wait until the interrupt signal arrives or browser window is closed
