@@ -44,6 +44,12 @@ build_windows.bat
 
 Contributions to Lethal Mod Manager are welcome.
 
+## Shout out to
+
+* Thunderstore, for providing a platform for everyone to enjoy mods.
+* v0.dev, for providing beautiful designs and helping me out with html.
+* chatgpt, for letting me focus on the important details.
+
 ## License
 
 Lethal Mod Manager is licensed under the MIT License.
