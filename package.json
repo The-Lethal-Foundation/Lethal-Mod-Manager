@@ -3,14 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
     "@types/jest": "^29.5.11",
-    "@types/node": "^20.11.7",
+    "@types/node": "^20.11.8",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "jest": "^27.5.1",
     "react-scripts": "^5.0.1",
-    "typescript": "^5.3.3"
+    "typescript": "^4.9.5"
   },
   "scripts": {
     "__start": "npm-run-all go:start react:start",
@@ -20,7 +23,7 @@
     "go:generate": "go generate",
     "go:build": "go build",
     "go:test": "go test ./...",
-    "react:start": "BROWSER=./browser.js react-scripts start",
+    "react:start": "react-scripts start",
     "react:build": "react-scripts build",
     "react:test": "react-scripts test --coverage --watchAll=false"
   },
@@ -38,8 +41,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
   },
   "jest": {
     "watchPathIgnorePatterns": [

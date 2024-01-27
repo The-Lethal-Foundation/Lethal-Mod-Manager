@@ -2,11 +2,7 @@ import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-interface AppProps {
-  sum: number
-}
-
-const App: React.FC<AppProps> = (props: AppProps) => {
+const App: React.FC = () => {
 
   const [active, setActive] = useState<boolean>(true);
 
@@ -21,7 +17,7 @@ const App: React.FC<AppProps> = (props: AppProps) => {
           Edit <code>src/App.tsx</code> and save to reload!
         </p>
         <p>
-          Sum from Go: {props.sum}
+          {/* Sum from Go: {props.sum} */}
         </p>
         <a
           className="App-link"
