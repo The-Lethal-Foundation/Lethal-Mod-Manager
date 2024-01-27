@@ -1,23 +1,24 @@
-//go:generate go run -tags generate gen.go
 //go:build !debug
-// +build !debug
 
+//go:generate go run -tags generate gen.go
 package main
 
 import (
+	"fmt"
 	"net"
 	"net/http"
 )
 
-type ProductionAppServer struct {
+type AppServer struct {
 	ln net.Listener
 }
 
-func NewProductionAppServer() *ProductionAppServer {
-	return &ProductionAppServer{}
+func NewAppServer() *AppServer {
+	fmt.Println("RELEASE MODE")
+	return &AppServer{}
 }
 
-func (s *ProductionAppServer) Serve() error {
+func (s *AppServer) Serve() error {
 	ln, err := net.Listen("tcp", "127.0.0.1:0")
 	if err != nil {
 		return err
@@ -30,13 +31,13 @@ func (s *ProductionAppServer) Serve() error {
 	return nil
 }
 
-func (s *ProductionAppServer) Close() error {
+func (s *AppServer) Close() error {
 	if s.ln != nil {
 		return s.ln.Close()
 	}
 	return nil
 }
 
-func (s *ProductionAppServer) Addr() string {
+func (s *AppServer) Addr() string {
 	return s.ln.Addr().String()
 }

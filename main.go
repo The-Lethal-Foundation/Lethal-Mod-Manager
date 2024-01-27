@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	ui, err := lorca.New("", "", 480, 320, "--remote-allow-origins=*")
+	ui, err := lorca.New("", "", 1080, 650, "--remote-allow-origins=*")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -18,7 +18,7 @@ func main() {
 	// blocking - in JS it's represented with a Promise.
 	ui.Bind("add", func(a, b int) int { return a + b })
 
-	server := NewProductionAppServer()
+	server := NewAppServer()
 	err = server.Serve()
 	if err != nil {
 		log.Fatal(err)

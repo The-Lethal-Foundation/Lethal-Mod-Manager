@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 const App: React.FC = () => {
@@ -10,25 +9,12 @@ const App: React.FC = () => {
     <div className="App">
       <header className="App-header">
         
-        {active && 
-          <img src={logo} className="App-logo" alt="logo" />
-        }
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload!
-        </p>
-        <p>
-          {/* Sum from Go: {props.sum} */}
-        </p>
-        <a
-          className="App-link"
-          href="https://www.linkedin.com/in/aniervs/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          What's up Anier!
-        </a>
+        I love Angelina {active ? '❤️' : '💔'}
 
-        <button  onClick={() => setActive(!active)}>Toggle</button>
+        <button onClick={() => setActive(!active)}>
+          {active ? 'Break up' : 'Get back together'}
+        </button>
+
       </header>
     </div>
   );

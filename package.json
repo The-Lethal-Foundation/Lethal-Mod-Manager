@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "cross-env": "^7.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -11,19 +12,20 @@
     "@types/node": "^20.11.8",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
+    "concurrently": "^8.2.2",
     "jest": "^27.5.1",
     "react-scripts": "^5.0.1",
     "typescript": "^4.9.5"
   },
   "scripts": {
-    "__start": "npm-run-all go:start react:start",
+    "start": "concurrently \"npm run react:start\" \"npm run go:start\"",
     "build": "npm run react:build && npm run go:generate && npm run go:build",
-    "__test": "npm-run-all go:test react:test",
-    "go:start": "go build -tags debug",
+    "test": "npm run go:test && npm run react:test",
+    "go:start": "go build -tags debug -o bin/app.exe && .\\bin\\app.exe",
     "go:generate": "go generate",
-    "go:build": "go build",
+    "go:build": "go build -o bin/app.exe",
     "go:test": "go test ./...",
-    "react:start": "react-scripts start",
+    "react:start": "cross-env BROWSER=none react-scripts start",
     "react:build": "react-scripts build",
     "react:test": "react-scripts test --coverage --watchAll=false"
   },

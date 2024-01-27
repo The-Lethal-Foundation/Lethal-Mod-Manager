@@ -12,6 +12,7 @@
 /build
 /assets.go
 /app
+/bin
 
 # misc
 .DS_Store
