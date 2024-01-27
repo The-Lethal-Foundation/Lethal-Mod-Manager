@@ -1,8 +1,22 @@
-//+build debug
+//go:build debug
+// +build debug
 
 package main
 
-func serve() (string, error) {
-	// Assume react dev server runs on default address
-	return "http://localhost:3000", nil
+type DebugAppServer struct{}
+
+func NewDebugAppServer() *DebugAppServer {
+	return &DebugAppServer{}
+}
+
+func (s *DebugAppServer) Serve() error {
+	return nil
+}
+
+func (s *DebugAppServer) Close() error {
+	return nil
+}
+
+func (s *DebugAppServer) Addr() string {
+	return "localhost:3000"
 }

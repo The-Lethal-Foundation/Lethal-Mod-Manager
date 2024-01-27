@@ -8,16 +8,25 @@ import (
 )
 
 func main() {
-	ui, _ := lorca.New("", "", 480, 320)
+	ui, err := lorca.New("", "", 480, 320, "--remote-allow-origins=*")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer ui.Close()
+
 	// Bind Go function to be available in JS. Go function may be long-running and
 	// blocking - in JS it's represented with a Promise.
 	ui.Bind("add", func(a, b int) int { return a + b })
 
-	addr, err := serve()
+	server := NewProductionAppServer()
+	err = server.Serve()
 	if err != nil {
 		log.Fatal(err)
 	}
-	ui.Load(addr)
+	defer server.Close()
+
+	fmt.Println("Server started on", server.Addr())
+	ui.Load(fmt.Sprintf("http://%s", server.Addr()))
 
 	// Call JS function from Go. Functions may be asynchronous, i.e. return promises
 	n := ui.Eval(`Math.random()`).Float()

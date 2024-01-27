@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
@@ -7,10 +7,16 @@ interface AppProps {
 }
 
 const App: React.FC<AppProps> = (props: AppProps) => {
+
+  const [active, setActive] = useState<boolean>(true);
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        
+        {active && 
+          <img src={logo} className="App-logo" alt="logo" />
+        }
         <p>
           Edit <code>src/App.tsx</code> and save to reload!
         </p>
@@ -19,12 +25,14 @@ const App: React.FC<AppProps> = (props: AppProps) => {
         </p>
         <a
           className="App-link"
-          href="https://reactjs.org"
+          href="https://www.linkedin.com/in/aniervs/"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          What's up Anier!
         </a>
+
+        <button  onClick={() => setActive(!active)}>Toggle</button>
       </header>
     </div>
   );
