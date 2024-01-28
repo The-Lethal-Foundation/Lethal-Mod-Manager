@@ -2,20 +2,26 @@ import './index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 import { createRoot } from 'react-dom/client'
-import { StrictMode } from 'react'
 
 // Functions bound from Lorca are available on the window object
+interface Mod {
+  mod_name: string;
+  mod_author: string;
+  mod_version: string;
+  mod_description: string;
+  mod_path_name: string;
+}
+
 declare global {
   interface Window {
-    add: (a: number, b: number) => Promise<number>;
+    getProfiles: () => Promise<string[]>;
+    getMods: (profileName: string) => Promise<Mod[]>;
   }
 }
 
 const root = createRoot(document.getElementById("root") as HTMLElement)
 root.render(
-  <StrictMode>
-    <App/>
-  </StrictMode>
+  <App/>
 )
 
 // If you want your app to work offline and load faster, you can change
