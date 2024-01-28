@@ -9,11 +9,9 @@ const App: React.FC = () => {
     <div className="App">
       <header className="App-header">
         
-        I love Angelina {active ? '❤️' : '💔'}
-
-        <button onClick={() => setActive(!active)}>
-          {active ? 'Break up' : 'Get back together'}
-        </button>
+        <div className='text-red-500'>
+          ABC 123
+        </div>
 
       </header>
     </div>
