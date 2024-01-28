@@ -1,14 +1,16 @@
-import { BlockUI } from "@/components/ui/block-ui";
-import type { FC, ReactNode } from "react";
+import React from 'react'
+
+import { BlockUI } from '@/components/ui/block-ui'
+import type { FC, ReactNode } from 'react'
 
 interface MainLayoutProps {
-  sidebar: ReactNode;
-  header: ReactNode;
+  sidebar: ReactNode
+  header: ReactNode
   blocking: {
-    isBlocked: boolean;
-    theme: "black" | "white";
-  };
-  children: ReactNode;
+    isBlocked: boolean
+    theme: 'black' | 'white'
+  }
+  children: ReactNode
 }
 
 const MainLayout: FC<MainLayoutProps> = ({
@@ -29,7 +31,7 @@ const MainLayout: FC<MainLayoutProps> = ({
 
       <BlockUI isBlocked={blocking.isBlocked} theme={blocking.theme} />
     </div>
-  );
-};
+  )
+}
 
-export { MainLayout };
+export { MainLayout }

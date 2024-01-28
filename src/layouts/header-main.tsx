@@ -1,5 +1,7 @@
-import type { FC } from "react";
-import { Input } from "./ui/input";
+import React from 'react'
+
+import type { FC } from 'react'
+import { Input } from '../components/ui/input'
 
 const Header: FC = () => {
   return (
@@ -16,7 +18,7 @@ const Header: FC = () => {
         </form>
       </div>
     </header>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

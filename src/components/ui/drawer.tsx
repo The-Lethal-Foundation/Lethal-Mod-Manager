@@ -1,9 +1,10 @@
-import * as React from "react"
-import { Drawer as DrawerPrimitive } from "vaul"
+import * as React from 'react'
+import { Drawer as DrawerPrimitive } from 'vaul'
 
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils'
 
 const Drawer = ({
+  // eslint-disable-next-line react/prop-types
   shouldScaleBackground = true,
   ...props
 }: React.ComponentProps<typeof DrawerPrimitive.Root>) => (
@@ -12,7 +13,7 @@ const Drawer = ({
     {...props}
   />
 )
-Drawer.displayName = "Drawer"
+Drawer.displayName = 'Drawer'
 
 const DrawerTrigger = DrawerPrimitive.Trigger
 
@@ -23,10 +24,11 @@ const DrawerClose = DrawerPrimitive.Close
 const DrawerOverlay = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Overlay>,
   React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Overlay>
+  // eslint-disable-next-line react/prop-types
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Overlay
     ref={ref}
-    className={cn("fixed inset-0 z-50 bg-black/80", className)}
+    className={cn('fixed inset-0 z-50 bg-black/80', className)}
     {...props}
   />
 ))
@@ -35,14 +37,15 @@ DrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName
 const DrawerContent = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content>
+  // eslint-disable-next-line react/prop-types
 >(({ className, children, ...props }, ref) => (
   <DrawerPortal>
     <DrawerOverlay />
     <DrawerPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border bg-background",
-        className
+        'fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border bg-background',
+        className,
       )}
       {...props}
     >
@@ -51,39 +54,42 @@ const DrawerContent = React.forwardRef<
     </DrawerPrimitive.Content>
   </DrawerPortal>
 ))
-DrawerContent.displayName = "DrawerContent"
+DrawerContent.displayName = 'DrawerContent'
 
 const DrawerHeader = ({
+  // eslint-disable-next-line react/prop-types
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn("grid gap-1.5 p-4 text-center sm:text-left", className)}
+    className={cn('grid gap-1.5 p-4 text-center sm:text-left', className)}
     {...props}
   />
 )
-DrawerHeader.displayName = "DrawerHeader"
+DrawerHeader.displayName = 'DrawerHeader'
 
 const DrawerFooter = ({
+  // eslint-disable-next-line react/prop-types
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn("mt-auto flex flex-col gap-2 p-4", className)}
+    className={cn('mt-auto flex flex-col gap-2 p-4', className)}
     {...props}
   />
 )
-DrawerFooter.displayName = "DrawerFooter"
+DrawerFooter.displayName = 'DrawerFooter'
 
 const DrawerTitle = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Title>,
   React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Title>
+  // eslint-disable-next-line react/prop-types
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Title
     ref={ref}
     className={cn(
-      "text-lg font-semibold leading-none tracking-tight",
-      className
+      'text-lg font-semibold leading-none tracking-tight',
+      className,
     )}
     {...props}
   />
@@ -93,10 +99,11 @@ DrawerTitle.displayName = DrawerPrimitive.Title.displayName
 const DrawerDescription = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Description>,
   React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Description>
+  // eslint-disable-next-line react/prop-types
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Description
     ref={ref}
-    className={cn("text-sm text-muted-foreground", className)}
+    className={cn('text-sm text-muted-foreground', className)}
     {...props}
   />
 ))
