@@ -1,17 +1,10 @@
-import './index.css'
+import '@/styles/index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 import { createRoot } from 'react-dom/client'
+import { Mod } from './lib/getMods';
 
 // Functions bound from Lorca are available on the window object
-interface Mod {
-  mod_name: string;
-  mod_author: string;
-  mod_version: string;
-  mod_description: string;
-  mod_path_name: string;
-}
-
 declare global {
   interface Window {
     getProfiles: () => Promise<string[]>;
