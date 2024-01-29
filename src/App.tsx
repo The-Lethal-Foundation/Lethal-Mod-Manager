@@ -59,14 +59,14 @@ const App: FC = () => {
         <ScrollArea
           style={{ maxHeight: 'calc(100vh - 50px - 20px)', overflowY: 'auto' }}
         >
-          <h1 className="pl-4 pt-4 md:pl-6 md:pt-6 font-semibold text-lg md:text-2xl text-white mb-4">
+          <h1 className="pl-4 pt-4 md:pl-6 md:pt-6 font-semibold text-lg md:text-2xl text-white">
             Mods
           </h1>
 
           {selectedProfile ? (
-            <ModList profile={selectedProfile} />
+            <ModList key={selectedProfile} profile={selectedProfile} />
           ) : (
-            <div className="w-full">
+            <div className="w-full mt-4">
               <span className="p-4 md:p-6 text-white">
                 ✌️ No mods here yet. Maybe select another profile.
               </span>

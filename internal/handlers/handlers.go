@@ -6,10 +6,13 @@ func SetupHandlers(ui lorca.UI) {
 
 	ui.Bind("init", handleInit)
 
-	ui.Bind("getProfiles", handleGetProfiles)
+	// mods
 	ui.Bind("getMods", handleGetMods)
+	ui.Bind("openModDir", handleOpenModDir)
+	ui.Bind("deleteMod", handleDeleteMod)
 
 	// profile
+	ui.Bind("getProfiles", handleGetProfiles)
 	ui.Bind("saveLastUsedProfile", handleSaveLastUsedProfile)
 	ui.Bind("loadLastUsedProfile", handleLoadLastUsedProfile)
 }

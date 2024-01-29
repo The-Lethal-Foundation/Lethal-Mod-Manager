@@ -57,3 +57,13 @@ func handleGetMods(profileName string) ([]GetModsResponse, error) {
 
 	return mods, nil
 }
+
+func handleDeleteMod(profileName, modPathName string) (string, error) {
+	err := mod.DeleteMod(profileName, modPathName)
+	if err != nil {
+		log.Printf("Error deleting mod: %v", err)
+		return "", err
+	}
+
+	return "Mod deleted", nil
+}

@@ -66,6 +66,7 @@ export function ProfileSelect({
             {profiles.map((profile) => {
               return (
                 <CommandItem
+                  className="hover:cursor-pointer"
                   value={profile.value}
                   key={profile.value}
                   onSelect={() => {

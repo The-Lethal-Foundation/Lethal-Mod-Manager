@@ -19,13 +19,18 @@ export const ModList: React.FC<ModListProps> = ({ profile }) => {
 
   return (
     <div className="w-full grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 text-white p-4 md:p-6">
-      {m.mods.map((mod, key) => (
-        <ModCard
-          key={key}
-          mod={mod}
-          image={`http://localhost:3001/images/${profile}/BepInEx/plugins/${mod.mod_path_name}/icon.png`}
-        />
-      ))}
+      {m.mods.length > 0 ? (
+        m.mods.map((mod, key) => (
+          <ModCard
+            key={key}
+            profile={profile}
+            mod={mod}
+            image={`http://localhost:3001/images/${profile}/BepInEx/plugins/${mod.mod_path_name}/icon.png`}
+          />
+        ))
+      ) : (
+        <p className="">🙊 No mods in this profile</p>
+      )}
     </div>
   )
 }

@@ -11,6 +11,8 @@ declare global {
   interface Window {
     init: () => Promise<string>
     getMods: (profileName: string) => Promise<Mod[]>
+    openModDir: (profile: string, modPathName: string) => Promise<string>
+    deleteMod: (profile: string, modPathName: string) => Promise<string>
 
     getProfiles: () => Promise<string[]>
     saveLastUsedProfile: (lastUsedProfile: string) => Promise<string>

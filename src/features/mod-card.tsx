@@ -5,43 +5,129 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import { Mod } from '@/types/mod'
-import { Trash2Icon } from 'lucide-react'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { FolderIcon, Trash2Icon } from 'lucide-react'
+import { toast } from 'sonner'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
 
 interface ModCardProps {
+  profile: string
   mod: Mod
   image?: string
 }
 
 export const ModCard: FC<ModCardProps> = ({
+  profile,
   mod,
   image = 'https://generated.vusercontent.net/placeholder.svg',
 }) => {
+  const [isMounted, setIsMounted] = React.useState(true)
+
+  if (!isMounted) {
+    return null
+  }
+
+  const openModFolder = () => {
+    window
+      .openModDir(profile, mod.mod_path_name)
+      .then(() => {})
+      .catch((err: string) => {
+        toast('🤕 Whoops!', {
+          description: `Something went wrong: ${err}`,
+        })
+      })
+  }
+
+  const deleteMod = () => {
+    setIsMounted(false)
+    window
+      .deleteMod(profile, mod.mod_path_name)
+      .then(() => {})
+      .catch((err: string) => {
+        toast('🤕 Whoops!', {
+          description: `Something went wrong: ${err}`,
+        })
+      })
+  }
+
   return (
-    <Card>
-      <CardHeader>
-        <img
-          src={image}
-          alt="Mod #1"
-          className="w-full h-48 object-cover rounded"
-        />
-      </CardHeader>
-      <CardContent>
-        <CardTitle>{mod.mod_name}</CardTitle>
-        <CardDescription className="truncate">
-          By {mod.mod_author}
-        </CardDescription>
-      </CardContent>
-      <CardFooter>
-        <Button variant="outline">
-          <Trash2Icon className="h-4 w-4" />
-        </Button>
-      </CardFooter>
-    </Card>
+    <>
+      <AlertDialog>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete this
+              mod.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={deleteMod}>
+              Delete mod
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+
+        <DropdownMenu>
+          <DropdownMenuContent>
+            <DropdownMenuLabel>Mod action</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem
+              className="hover:cursor-pointer"
+              onClick={openModFolder}
+            >
+              <FolderIcon className="mr-2 h-4 w-4" />
+              Open folder
+            </DropdownMenuItem>
+            <AlertDialogTrigger className="w-full">
+              <DropdownMenuItem className="hover:cursor-pointer">
+                <Trash2Icon className="mr-2 h-4 w-4" />
+                Delete
+              </DropdownMenuItem>
+            </AlertDialogTrigger>
+          </DropdownMenuContent>
+          <DropdownMenuTrigger asChild>
+            <Card className="bg-[#09090b] border-none hover:scale-110 duration-300 hover:cursor-pointer">
+              <CardHeader>
+                <img
+                  src={image}
+                  alt="Mod #1"
+                  className="w-full h-48 object-cover rounded"
+                />
+              </CardHeader>
+              <CardContent>
+                <CardTitle className="text-white">{mod.mod_name}</CardTitle>
+                <CardDescription className="truncate text-xs mt-1">
+                  By {mod.mod_author}
+                </CardDescription>
+              </CardContent>
+            </Card>
+          </DropdownMenuTrigger>
+        </DropdownMenu>
+      </AlertDialog>
+    </>
   )
 }

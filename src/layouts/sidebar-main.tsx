@@ -30,7 +30,10 @@ const Sidebar: FC<SidebarProps> = ({ profiles, setProfile, profile }) => {
             />
             <Separator className="my-2 bg-[#27272a]" />
 
-            <Button variant="link" className="text-white justify-start pl-3">
+            <Button
+              variant="link"
+              className="text-white justify-start pl-3 border-white border-2 border-opacity-10"
+            >
               <FileIcon className="mr-2 h-4 w-4" />
               Local mods
             </Button>
