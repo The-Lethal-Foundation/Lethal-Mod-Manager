@@ -20,17 +20,20 @@ const App: FC = () => {
 
   useEffect(() => {
     if (!p.isLoading || p.error) {
-      unblock()
+      console.log('Profiles list loaded')
     }
   }, [p.isLoading, p.error, unblock])
 
   useEffect(() => {
     window
       .init()
-      .then(() => {
+      .then((profileName: string) => {
         toast('🧙‍♂️ Spellbound!', {
           description: 'Your grimoire is ready for enchanting adventures.',
         })
+        unblock()
+        setSelectedProfile(profileName)
+        console.log('Remembered Profile:', profileName)
       })
       .catch((out: string) => {
         toast('🤕 Whoops!', {
@@ -44,7 +47,11 @@ const App: FC = () => {
       <Toaster theme="dark" />
       <MainLayout
         sidebar={
-          <Sidebar profiles={p.profiles} setProfile={setSelectedProfile} />
+          <Sidebar
+            profiles={p.profiles}
+            setProfile={setSelectedProfile}
+            profile={selectedProfile}
+          />
         }
         header={<Header />}
         blocking={{ isBlocked, theme }}

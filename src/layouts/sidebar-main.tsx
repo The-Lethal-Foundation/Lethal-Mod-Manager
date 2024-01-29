@@ -8,9 +8,10 @@ import type { FC } from 'react'
 interface SidebarProps {
   profiles: { label: string; value: string }[]
   setProfile: (profile: string | null) => void
+  profile: string | null
 }
 
-const Sidebar: FC<SidebarProps> = ({ profiles, setProfile }) => {
+const Sidebar: FC<SidebarProps> = ({ profiles, setProfile, profile }) => {
   return (
     <div className="bg-[#09090b] hidden border-r border-[#27272a] lg:block">
       <div className="flex h-full max-h-screen flex-col gap-2">
@@ -22,7 +23,11 @@ const Sidebar: FC<SidebarProps> = ({ profiles, setProfile }) => {
         </div>
         <div className="flex-1 overflow-auto py-2">
           <nav className="grid justify-center px-4 text-sm font-medium gap-2">
-            <ProfileSelect profiles={profiles} setProfile={setProfile} />
+            <ProfileSelect
+              profiles={profiles}
+              setProfile={setProfile}
+              profile={profile}
+            />
             <Separator className="my-2 bg-[#27272a]" />
 
             <Button variant="link" className="text-white justify-start pl-3">

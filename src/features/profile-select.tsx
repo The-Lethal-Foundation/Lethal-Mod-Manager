@@ -18,12 +18,25 @@ import {
 
 interface ProfileSelectProps {
   profiles: { label: string; value: string }[]
+  profile: string | null
   setProfile: (profile: string | null) => void
 }
 
-export function ProfileSelect({ profiles, setProfile }: ProfileSelectProps) {
+export function ProfileSelect({
+  profiles,
+  setProfile,
+  profile,
+}: ProfileSelectProps) {
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState('')
+
+  React.useEffect(() => {
+    if (profile && profile.length > 0) {
+      setValue(profile)
+      window.saveLastUsedProfile(profile)
+      console.log('Set the profile-select default value to:', profile)
+    }
+  }, [profile])
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

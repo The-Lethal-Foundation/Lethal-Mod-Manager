@@ -9,9 +9,12 @@ import type { Mod } from './types/mod'
 // Functions bound from Lorca are available on the window object
 declare global {
   interface Window {
-    getProfiles: () => Promise<string[]>
-    getMods: (profileName: string) => Promise<Mod[]>
     init: () => Promise<string>
+    getMods: (profileName: string) => Promise<Mod[]>
+
+    getProfiles: () => Promise<string[]>
+    saveLastUsedProfile: (lastUsedProfile: string) => Promise<string>
+    loadLastUsedProfile: () => Promise<string>
   }
 }
 
