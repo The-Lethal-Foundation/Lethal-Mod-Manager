@@ -52,3 +52,19 @@ func GetProfilesPath() (string, error) {
 
 	return path, nil
 }
+
+func IsDirEmpty(name string) (bool, error) {
+	f, err := os.Open(name)
+	if err != nil {
+		return false, err
+	}
+
+	defer f.Close()
+
+	_, err = f.Readdirnames(1) // Or f.Readdir(1)
+	if err == nil {
+		return false, nil
+	}
+
+	return true, nil
+}

@@ -18,21 +18,51 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { DownloadIcon, LinkIcon } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface GlobalModCardProps {
-  profile: string
+  profile: string | null
   mod: GlobalModView
   image?: string
 }
 
 export const GlobalModCard: FC<GlobalModCardProps> = ({
+  profile,
   mod,
   image = 'https://generated.vusercontent.net/placeholder.svg',
 }) => {
-  const visitMod = () =>
+  const visitMod = () => {
     window.open(
-      `https://thunderstore.io/c/lethal-company/p/${mod.mod_author}/${mod.mod_name}`,
+      `https://thunderstore.io/c/lethal-company/p/${mod.mod_author}/${mod.mod_name.replace(/\s/g, '_')}`,
     )
+  }
+
+  const installMod = () => {
+    toast('🧙‍♂️ Installing mod...', {
+      description: `${mod.mod_name} by ${mod.mod_author}`,
+      duration: 0,
+    })
+
+    if (!profile) {
+      toast('🤕 Whoops!', {
+        description: 'No profile selected',
+      })
+      return
+    }
+
+    window
+      .installMod(profile, mod.mod_author, mod.mod_name.replace(/\s/g, '_'))
+      .then(() => {
+        toast('✅', {
+          description: `${mod.mod_name} installed!`,
+        })
+      })
+      .catch((out: string) => {
+        toast('🤕 Whoops!', {
+          description: `Something went wrong: ${out}`,
+        })
+      })
+  }
 
   return (
     <>
@@ -41,7 +71,10 @@ export const GlobalModCard: FC<GlobalModCardProps> = ({
           <DropdownMenuLabel>Mod action</DropdownMenuLabel>
           <DropdownMenuSeparator />
 
-          <DropdownMenuItem className="hover:cursor-pointer">
+          <DropdownMenuItem
+            className="hover:cursor-pointer"
+            onClick={installMod}
+          >
             <DownloadIcon className="w-4 h-4 mr-2" />
             Install
           </DropdownMenuItem>

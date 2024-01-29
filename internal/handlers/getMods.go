@@ -5,6 +5,7 @@ import (
 
 	mod "github.com/KonstantinBelenko/lethal-mod-manager/pkg/lcfs/mod"
 	"github.com/KonstantinBelenko/lethal-mod-manager/pkg/tsapi"
+	"github.com/KonstantinBelenko/lethal-mod-manager/pkg/types"
 )
 
 type GetModsResponse struct {
@@ -77,4 +78,18 @@ func handleGetGlobalMods(ordering string, page int) ([]tsapi.GlobalModView, erro
 	}
 
 	return mods, nil
+}
+
+func handleInstallMod(profileName, authorName, modName string) (string, error) {
+	err := mod.InstallMod(profileName, types.ModName{
+		Name:   modName,
+		Author: authorName,
+	}, func(current, total int, title string) {})
+
+	if err != nil {
+		log.Printf("Error installing mod: %v", err)
+		return "", err
+	}
+
+	return "Mod installed", nil
 }

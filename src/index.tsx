@@ -15,6 +15,11 @@ declare global {
     deleteMod: (profile: string, modPathName: string) => Promise<string>
 
     getGlobalMods: (ordering: string, page: number) => Promise<GlobalModView[]>
+    installMod: (
+      profile: string,
+      modAuthor: string,
+      modName: string,
+    ) => Promise<string>
 
     getProfiles: () => Promise<string[]>
     saveLastUsedProfile: (lastUsedProfile: string) => Promise<string>

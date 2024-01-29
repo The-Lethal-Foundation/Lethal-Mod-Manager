@@ -5,9 +5,14 @@ import { GlobalModCard } from './mod-card-global'
 interface GlobalModListProps {
   page: number
   ordering: string
+  profile: string | null
 }
 
-const GlobalModList: React.FC<GlobalModListProps> = ({ page, ordering }) => {
+const GlobalModList: React.FC<GlobalModListProps> = ({
+  page,
+  ordering,
+  profile,
+}) => {
   const { globalMods, isLoading, error } = useGetGlobalMods(page, ordering)
 
   useEffect(() => {
@@ -28,7 +33,7 @@ const GlobalModList: React.FC<GlobalModListProps> = ({ page, ordering }) => {
             key={index}
             mod={mod}
             image={mod.mod_picture}
-            profile={''}
+            profile={profile}
           />
         ))
       ) : (

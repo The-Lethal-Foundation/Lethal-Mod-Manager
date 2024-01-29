@@ -20,10 +20,9 @@ const (
 )
 
 type GlobalModView struct {
-	ModAuthor    string `json:"mod_author"`
-	ModName      string `json:"mod_name"`
-	ModPicture   string `json:"mod_picture"`
-	ModDownloads string `json:"mod_downloads"`
+	ModAuthor  string `json:"mod_author"`
+	ModName    string `json:"mod_name"`
+	ModPicture string `json:"mod_picture"`
 }
 
 func GlobalListMods(ordering OrderingType, page int) ([]GlobalModView, error) {
@@ -56,18 +55,13 @@ func GlobalListMods(ordering OrderingType, page int) ([]GlobalModView, error) {
 
 		// Extract mod author
 		// div.col-md-4:nth-child(1) > div:nth-child(2) > div:nth-child(3) > a
-		modAuthor := strings.Trim(element.Find("div > div > div > a").Text(), " \n")
-
-		// Extract mod downloads
-		// div.col-md-4:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > i:nth-child(1)
-		modDownloads := element.Find("div > div > div > div > i").Text()
+		modAuthor := strings.Trim(element.Find("div:nth-child(2) > div:nth-child(3) > a").Text(), " \n")
 
 		if modName != "" {
 			mods = append(mods, GlobalModView{
-				ModAuthor:    modAuthor,
-				ModName:      modName,
-				ModPicture:   modPicture,
-				ModDownloads: modDownloads,
+				ModAuthor:  modAuthor,
+				ModName:    modName,
+				ModPicture: modPicture,
 			})
 		}
 	})

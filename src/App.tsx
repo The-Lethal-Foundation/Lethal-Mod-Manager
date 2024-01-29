@@ -85,7 +85,11 @@ const App: FC = () => {
           )}
 
           {selectedTab === 'global-mods' && (
-            <GlobalModList page={pageState} ordering={orderingState} />
+            <GlobalModList
+              page={pageState}
+              ordering={orderingState}
+              profile={selectedProfile}
+            />
           )}
         </ScrollArea>
       </MainLayout>
