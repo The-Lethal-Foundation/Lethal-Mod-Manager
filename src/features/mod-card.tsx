@@ -121,7 +121,7 @@ export const ModCard: FC<ModCardProps> = ({
               <CardContent>
                 <CardTitle className="text-white">{mod.mod_name}</CardTitle>
                 <CardDescription className="truncate text-xs mt-1">
-                  By {mod.mod_author}
+                  By {mod.mod_author} • {mod.mod_version}
                 </CardDescription>
               </CardContent>
             </Card>

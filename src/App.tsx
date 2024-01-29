@@ -7,16 +7,22 @@ import { MainLayout } from '@/layouts/MainLayout'
 import Sidebar from '@/layouts/sidebar-main'
 import Header from '@/layouts/header-main'
 import { useBlockUI } from '@/components/ui/block-ui'
-import { ModList } from './features/mod-list'
+import { ModList } from '@/features/mod-list'
 
 import { toast } from 'sonner'
-import { Toaster } from './components/ui/sonner'
+import { Toaster } from '@/components/ui/sonner'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { Tab } from '@/types/uiState'
+import { GlobalModList } from './features/mod-list-global'
 
 const App: FC = () => {
   const { isBlocked, theme, unblock } = useBlockUI('black', true)
   const p = useGetProfiles()
   const [selectedProfile, setSelectedProfile] = useState<string | null>(null)
+  const [selectedTab, setSelectedTab] = useState<Tab>('local-mods')
+
+  const [pageState] = useState(1)
+  const [orderingState] = useState('top-rated')
 
   useEffect(() => {
     if (!p.isLoading || p.error) {
@@ -33,7 +39,6 @@ const App: FC = () => {
         })
         unblock()
         setSelectedProfile(profileName)
-        console.log('Remembered Profile:', profileName)
       })
       .catch((out: string) => {
         toast('🤕 Whoops!', {
@@ -51,6 +56,8 @@ const App: FC = () => {
             profiles={p.profiles}
             setProfile={setSelectedProfile}
             profile={selectedProfile}
+            selectedTab={selectedTab}
+            setSelectedTab={setSelectedTab}
           />
         }
         header={<Header />}
@@ -63,14 +70,22 @@ const App: FC = () => {
             Mods
           </h1>
 
-          {selectedProfile ? (
-            <ModList key={selectedProfile} profile={selectedProfile} />
-          ) : (
-            <div className="w-full mt-4">
-              <span className="p-4 md:p-6 text-white">
-                ✌️ No mods here yet. Maybe select another profile.
-              </span>
-            </div>
+          {selectedTab === 'local-mods' && (
+            <>
+              {selectedProfile ? (
+                <ModList key={selectedProfile} profile={selectedProfile} />
+              ) : (
+                <div className="w-full mt-4">
+                  <span className="p-4 md:p-6 text-white">
+                    ✌️ No mods here yet. Maybe select another profile.
+                  </span>
+                </div>
+              )}
+            </>
+          )}
+
+          {selectedTab === 'global-mods' && (
+            <GlobalModList page={pageState} ordering={orderingState} />
           )}
         </ScrollArea>
       </MainLayout>

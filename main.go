@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	handlers "github.com/KonstantinBelenko/lethal-mod-manager/internal/handlers"
+	"github.com/KonstantinBelenko/lethal-mod-manager/internal/handlers"
 	"github.com/zserge/lorca"
 )
 

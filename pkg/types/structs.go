@@ -1,4 +1,4 @@
-package mod
+package types
 
 type ProgressCallback func(current, total int, title string)
 

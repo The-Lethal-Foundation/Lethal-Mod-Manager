@@ -13,7 +13,11 @@ export const ModList: React.FC<ModListProps> = ({ profile }) => {
 
   useEffect(() => {
     if (!m.isLoading || m.error) {
-      console.log('Mods:', m.mods.length, m.mods)
+      if (m.error) {
+        console.error(m.error)
+      }
+
+      console.log('Loaded mod list:', m.mods.length)
     }
   }, [m.isLoading, m.error, m.mods])
 

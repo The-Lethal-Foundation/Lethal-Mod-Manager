@@ -4,7 +4,7 @@ import '@/styles/index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 import { createRoot } from 'react-dom/client'
-import type { Mod } from './types/mod'
+import type { GlobalModView, Mod } from './types/mod'
 
 // Functions bound from Lorca are available on the window object
 declare global {
@@ -13,6 +13,8 @@ declare global {
     getMods: (profileName: string) => Promise<Mod[]>
     openModDir: (profile: string, modPathName: string) => Promise<string>
     deleteMod: (profile: string, modPathName: string) => Promise<string>
+
+    getGlobalMods: (ordering: string, page: number) => Promise<GlobalModView[]>
 
     getProfiles: () => Promise<string[]>
     saveLastUsedProfile: (lastUsedProfile: string) => Promise<string>

@@ -34,7 +34,6 @@ export function ProfileSelect({
     if (profile && profile.length > 0) {
       setValue(profile)
       window.saveLastUsedProfile(profile)
-      console.log('Set the profile-select default value to:', profile)
     }
   }, [profile])
 

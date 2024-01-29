@@ -4,14 +4,23 @@ import { Button } from '@/components/ui/button'
 import { FileIcon, GlobeIcon, Package2Icon } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
 import type { FC } from 'react'
+import { Tab } from '@/types/uiState'
 
 interface SidebarProps {
   profiles: { label: string; value: string }[]
   setProfile: (profile: string | null) => void
   profile: string | null
+  selectedTab?: Tab
+  setSelectedTab?: (tab: Tab) => void
 }
 
-const Sidebar: FC<SidebarProps> = ({ profiles, setProfile, profile }) => {
+const Sidebar: FC<SidebarProps> = ({
+  profiles,
+  setProfile,
+  profile,
+  selectedTab,
+  setSelectedTab,
+}) => {
   return (
     <div className="bg-[#09090b] hidden border-r border-[#27272a] lg:block">
       <div className="flex h-full max-h-screen flex-col gap-2">
@@ -31,16 +40,25 @@ const Sidebar: FC<SidebarProps> = ({ profiles, setProfile, profile }) => {
             <Separator className="my-2 bg-[#27272a]" />
 
             <Button
-              variant="link"
-              className="text-white justify-start pl-3 border-white border-2 border-opacity-10"
+              variant="ghost"
+              className={`text-white justify-start pl-3 hover:bg-[#27272a] hover:text-white ${
+                selectedTab === 'local-mods' ? 'bg-[#18181B]' : ''
+              }`}
+              onClick={() => setSelectedTab && setSelectedTab('local-mods')}
             >
               <FileIcon className="mr-2 h-4 w-4" />
               Local mods
             </Button>
 
-            <Button variant="link" className="text-white justify-start pl-3">
+            <Button
+              variant="ghost"
+              className={`text-white justify-start pl-3 hover:bg-[#27272a] hover:text-white ${
+                selectedTab === 'global-mods' ? 'bg-[#18181B]' : ''
+              }`}
+              onClick={() => setSelectedTab && setSelectedTab('global-mods')}
+            >
               <GlobeIcon className="mr-2 h-4 w-4" />
-              Online mods
+              Global mods
             </Button>
           </nav>
         </div>

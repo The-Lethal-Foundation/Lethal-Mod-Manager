@@ -4,6 +4,7 @@ import (
 	"log"
 
 	mod "github.com/KonstantinBelenko/lethal-mod-manager/pkg/lcfs/mod"
+	"github.com/KonstantinBelenko/lethal-mod-manager/pkg/tsapi"
 )
 
 type GetModsResponse struct {
@@ -66,4 +67,14 @@ func handleDeleteMod(profileName, modPathName string) (string, error) {
 	}
 
 	return "Mod deleted", nil
+}
+
+func handleGetGlobalMods(ordering string, page int) ([]tsapi.GlobalModView, error) {
+	mods, err := tsapi.GlobalListMods(tsapi.OrderingType(ordering), page)
+	if err != nil {
+		log.Printf("Error getting global mods: %v", err)
+		return nil, err
+	}
+
+	return mods, nil
 }
