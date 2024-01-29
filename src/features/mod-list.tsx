@@ -9,18 +9,17 @@ interface ModListProps {
 }
 
 export const ModList: React.FC<ModListProps> = ({ profile }) => {
-  const { mods } = useGetMods(profile)
-
-  // const mods = testModList
+  const m = useGetMods(profile)
 
   useEffect(() => {
-    console.log('New profile:', profile)
-    console.log('New mods:', mods)
-  }, [profile])
+    if (!m.isLoading || m.error) {
+      console.log('Mods:', m.mods.length, m.mods)
+    }
+  }, [m.isLoading, m.error, m.mods])
 
   return (
-    <div className="w-full grid gap-6 md:grid-cols-2 lg:grid-cols-3 text-white">
-      {mods.map((mod, key) => (
+    <div className="w-full grid gap-6 md:grid-cols-2 lg:grid-cols-3 text-white p-4 md:p-6">
+      {m.mods.map((mod, key) => (
         <ModCard key={key} mod={mod} />
       ))}
     </div>

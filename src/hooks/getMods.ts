@@ -11,7 +11,6 @@ const useGetMods = (profileName: string) => {
       setIsLoading(true)
       try {
         const modsData = await window.getMods(profileName)
-        console.log('got moooooods', modsData)
         setMods(modsData)
       } catch (err) {
         setError(err as Error)

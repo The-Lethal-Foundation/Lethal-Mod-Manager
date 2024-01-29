@@ -25,10 +25,6 @@ export function ProfileSelect({ profiles, setProfile }: ProfileSelectProps) {
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState('')
 
-  // React.useEffect(() => {
-  //   console.log('useEffect | New profile value:', value)
-  // }, [value])
-
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -57,11 +53,11 @@ export function ProfileSelect({ profiles, setProfile }: ProfileSelectProps) {
             {profiles.map((profile) => {
               return (
                 <CommandItem
-                  key={profile.value}
                   value={profile.value}
-                  onSelect={(currentValue) => {
-                    setValue(currentValue === value ? '' : currentValue)
-                    setProfile(currentValue === value ? '' : currentValue)
+                  key={profile.value}
+                  onSelect={() => {
+                    setValue(profile.value === value ? '' : profile.value)
+                    setProfile(profile.value === value ? '' : profile.value)
                     setOpen(false)
                   }}
                 >

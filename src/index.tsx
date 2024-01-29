@@ -11,7 +11,7 @@ declare global {
   interface Window {
     getProfiles: () => Promise<string[]>
     getMods: (profileName: string) => Promise<Mod[]>
-    init: () => Promise<void>
+    init: () => Promise<string>
   }
 }
 
