@@ -34,8 +34,8 @@ func (s *AppServer) Serve() error {
 		log.Fatal(err)
 	}
 
+	server.Handle("/images/", http.StripPrefix("/images/", http.FileServer(http.Dir(profilesPath))))
 	server.Handle("/", http.StripPrefix("/", http.FileServer(FS)))
-	server.Handle("/images", http.StripPrefix("/images", http.FileServer(http.Dir(profilesPath))))
 
 	go http.Serve(ln, server)
 	return nil

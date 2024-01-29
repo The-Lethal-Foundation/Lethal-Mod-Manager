@@ -26,7 +26,7 @@ func main() {
 	ui.Load(fmt.Sprintf("http://%s", server.Addr()))
 
 	// Initialize handlers
-	handlers.SetupHandlers(ui)
+	handlers.SetupHandlers(ui, server.Addr())
 
 	// Wait for the browser window to be closed
 	<-ui.Done()

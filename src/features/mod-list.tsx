@@ -6,9 +6,10 @@ import { useEffect } from 'react'
 
 interface ModListProps {
   profile: string
+  host: string | null
 }
 
-export const ModList: React.FC<ModListProps> = ({ profile }) => {
+export const ModList: React.FC<ModListProps> = ({ profile, host }) => {
   const m = useGetMods(profile)
 
   useEffect(() => {
@@ -29,7 +30,7 @@ export const ModList: React.FC<ModListProps> = ({ profile }) => {
             key={key}
             profile={profile}
             mod={mod}
-            image={`http://localhost:3001/images/${profile}/BepInEx/plugins/${mod.mod_path_name}/icon.png`}
+            image={`http://${host}/images/${profile}/BepInEx/plugins/${mod.mod_path_name}/icon.png`}
           />
         ))
       ) : (

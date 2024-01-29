@@ -71,7 +71,12 @@ func LocalModExists(profile string, mod types.ModName) (bool, error) {
 		if strings.Contains(m, mod.Name) {
 
 			// Check if mod dir is empty, if so, remove it and return false
-			modPath := filepath.Join(profile, "BepInEx", "plugins", m)
+			profilePath, err := util.GetProfilePath(profile)
+			if err != nil {
+				return false, fmt.Errorf("error getting profile path: %w", err)
+			}
+
+			modPath := filepath.Join(profilePath, "BepInEx", "plugins", m)
 			isEmpty, err := util.IsDirEmpty(modPath)
 			if err != nil {
 				return false, fmt.Errorf("error checking if mod dir is empty: %w", err)

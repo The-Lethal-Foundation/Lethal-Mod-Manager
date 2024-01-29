@@ -18,6 +18,8 @@ import { GlobalModList } from './features/mod-list-global'
 const App: FC = () => {
   const { isBlocked, theme, unblock } = useBlockUI('black', true)
   const p = useGetProfiles()
+
+  const [host, setHost] = useState<string | null>(null)
   const [selectedProfile, setSelectedProfile] = useState<string | null>(null)
   const [selectedTab, setSelectedTab] = useState<Tab>('local-mods')
 
@@ -33,18 +35,21 @@ const App: FC = () => {
   useEffect(() => {
     window
       .init()
-      .then((profileName: string) => {
+      .then((lastUsedProfile) => {
         toast('🧙‍♂️ Spellbound!', {
           description: 'Your grimoire is ready for enchanting adventures.',
         })
-        unblock()
-        setSelectedProfile(profileName)
+        setSelectedProfile(lastUsedProfile)
       })
       .catch((out: string) => {
         toast('🤕 Whoops!', {
           description: `Something went wrong: ${out}`,
         })
       })
+    window.getAddr().then((addr) => {
+      setHost(addr)
+      unblock()
+    })
   }, [])
 
   return (
@@ -73,7 +78,11 @@ const App: FC = () => {
           {selectedTab === 'local-mods' && (
             <>
               {selectedProfile ? (
-                <ModList key={selectedProfile} profile={selectedProfile} />
+                <ModList
+                  key={selectedProfile}
+                  profile={selectedProfile}
+                  host={host}
+                />
               ) : (
                 <div className="w-full mt-4">
                   <span className="p-4 md:p-6 text-white">

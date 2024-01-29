@@ -10,6 +10,7 @@ import type { GlobalModView, Mod } from './types/mod'
 declare global {
   interface Window {
     init: () => Promise<string>
+    getAddr: () => Promise<string>
     getMods: (profileName: string) => Promise<Mod[]>
     openModDir: (profile: string, modPathName: string) => Promise<string>
     deleteMod: (profile: string, modPathName: string) => Promise<string>
