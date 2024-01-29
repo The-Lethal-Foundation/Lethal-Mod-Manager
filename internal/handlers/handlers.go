@@ -11,6 +11,7 @@ func SetupHandlers(ui lorca.UI, addr string) {
 	// setup
 	ui.Bind("init", handleInit)
 	ui.Bind("getAddr", handleGetAddr)
+	ui.Bind("runGame", handleRunGame)
 
 	// mods
 	ui.Bind("getMods", handleGetMods)

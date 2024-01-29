@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 
+	"github.com/KonstantinBelenko/lethal-mod-manager/pkg/lcfs/game"
 	"github.com/KonstantinBelenko/lethal-mod-manager/pkg/lcfs/util"
 )
 
@@ -35,4 +36,13 @@ func handleInit() (string, error) {
 	}
 
 	return config.LastUsedProfile, nil
+}
+
+func handleRunGame(profile string) (string, error) {
+	err := game.LaunchGameProfile(profile)
+	if err != nil {
+		fmt.Printf("Error launching game: %v\n", err)
+		return "", err
+	}
+	return "Game launched successfully", nil
 }

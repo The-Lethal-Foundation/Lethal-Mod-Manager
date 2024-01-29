@@ -65,7 +65,7 @@ const App: FC = () => {
             setSelectedTab={setSelectedTab}
           />
         }
-        header={<Header />}
+        header={<Header profile={selectedProfile} />}
         blocking={{ isBlocked, theme }}
       >
         <ScrollArea

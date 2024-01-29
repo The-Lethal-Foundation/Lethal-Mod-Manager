@@ -6,9 +6,9 @@ import (
 )
 
 /*
-	util.go
+util.go
 
-	Utilities for lethal ocmpany file system access.
+Utilities for lethal ocmpany file system access.
 */
 
 func GetModsPath(profileName string) (string, error) {
