@@ -4,31 +4,6 @@ import '@/styles/index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 import { createRoot } from 'react-dom/client'
-import type { GlobalModView, Mod } from './types/mod'
-
-// Functions bound from Lorca are available on the window object
-declare global {
-  interface Window {
-    init: () => Promise<string>
-    getAddr: () => Promise<string>
-    runGame: (profile: string) => Promise<string>
-
-    getMods: (profileName: string) => Promise<Mod[]>
-    openModDir: (profile: string, modPathName: string) => Promise<string>
-    deleteMod: (profile: string, modPathName: string) => Promise<string>
-
-    getGlobalMods: (ordering: string, page: number) => Promise<GlobalModView[]>
-    installMod: (
-      profile: string,
-      modAuthor: string,
-      modName: string,
-    ) => Promise<string>
-
-    getProfiles: () => Promise<string[]>
-    saveLastUsedProfile: (lastUsedProfile: string) => Promise<string>
-    loadLastUsedProfile: () => Promise<string>
-  }
-}
 
 const root = createRoot(document.getElementById('root') as HTMLElement)
 root.render(<App />)

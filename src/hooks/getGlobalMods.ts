@@ -1,7 +1,13 @@
+import { ordering, section } from '@/types/global'
 import type { GlobalModView } from '@/types/mod'
 import { useState, useEffect } from 'react'
 
-const useGetGlobalMods = (pageState: number, orderingState: string) => {
+const useGetGlobalMods = (
+  pageState: number,
+  orderingState: ordering,
+  sectionState: section,
+  queryState: string,
+) => {
   const [globalMods, setGlobalMods] = useState<GlobalModView[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [error, setError] = useState<Error | null>(null)
@@ -12,6 +18,8 @@ const useGetGlobalMods = (pageState: number, orderingState: string) => {
       try {
         const newGlobalMods = await window.getGlobalMods(
           orderingState,
+          sectionState,
+          queryState,
           pageState,
         )
         setGlobalMods(newGlobalMods)
@@ -23,7 +31,7 @@ const useGetGlobalMods = (pageState: number, orderingState: string) => {
     }
 
     fetchGlobalMods()
-  }, [pageState, orderingState])
+  }, [pageState, orderingState, sectionState, queryState]) // Include queryState in the dependency array
 
   return { globalMods, isLoading, error }
 }

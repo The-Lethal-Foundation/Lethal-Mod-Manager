@@ -3,20 +3,28 @@ package tsapi
 import (
 	"fmt"
 	"net/http"
+	"net/url"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
 )
 
-// OrderingType is a custom type for ordering options
 type OrderingType string
 
-// Define constants for each valid ordering option
 const (
 	LastUpdated    OrderingType = "last-updated"
 	Newest         OrderingType = "newest"
 	MostDownloaded OrderingType = "most-downloaded"
 	TopRated       OrderingType = "top-rated"
+)
+
+type SectionType string
+
+const (
+	Mods              SectionType = "mods"
+	AssetReplacements SectionType = "asset-replacements"
+	Libraries         SectionType = "libraries"
+	Modpacks          SectionType = "modpacks"
 )
 
 type GlobalModView struct {
@@ -25,8 +33,11 @@ type GlobalModView struct {
 	ModPicture string `json:"mod_picture"`
 }
 
-func GlobalListMods(ordering OrderingType, page int) ([]GlobalModView, error) {
-	reqUrl := "https://thunderstore.io/c/lethal-company/?q=a&ordering=" + string(ordering) + "&section=mods&page=" + fmt.Sprintf("%d", page)
+func GlobalListMods(ordering OrderingType, sectionType SectionType, query string, page int) ([]GlobalModView, error) {
+	encodedQuery := url.QueryEscape(query) // URL encode the query parameter
+	reqUrl := fmt.Sprintf("https://thunderstore.io/c/lethal-company/?q=%s&ordering=%s&section=%s&page=%d", encodedQuery, ordering, sectionType, page)
+	fmt.Printf("SEARCHING MODS FOR: %s\n", reqUrl)
+
 	response, err := http.Get(reqUrl)
 	if err != nil {
 		return nil, err

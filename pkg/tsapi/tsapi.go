@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"time"
 
 	types "github.com/KonstantinBelenko/lethal-mod-manager/pkg/types"
 )
@@ -45,33 +46,48 @@ func GetModInfo(mod types.ModName) (*types.ModInfoResponse, error) {
 
 // Downloads the mod zip file to a random temp folder
 func DownloadMod(mod types.ModName) (string, error) {
-	// Construct the download URL
 	downloadURL := fmt.Sprintf("https://gcdn.thunderstore.io/live/repository/packages/%s-%s-%s.zip", mod.Author, mod.Name, mod.Version)
 
-	// Make the HTTP request to download the mod
-	resp, err := http.Get(downloadURL)
-	if err != nil {
-		return "", fmt.Errorf("error making download request: %w", err)
+	var resp *http.Response
+	var err error
+	maxRetries := 5
+
+	for attempt := 1; attempt <= maxRetries; attempt++ {
+		resp, err = http.Get(downloadURL)
+		if err != nil {
+			return "", fmt.Errorf("error making download request: %w", err)
+		}
+
+		if resp.StatusCode == http.StatusOK {
+			break
+		} else if resp.StatusCode == http.StatusTooManyRequests {
+			resp.Body.Close() // Close the response body before retrying
+			if attempt < maxRetries {
+				time.Sleep(2 * time.Second)
+				continue
+			}
+		} else {
+			resp.Body.Close()
+			return "", fmt.Errorf("received non-OK response status: %s", resp.Status)
+		}
 	}
+
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("received non-OK response status: %s", resp.Status)
+		return "", fmt.Errorf("failed to download after %d attempts", maxRetries)
 	}
 
-	// Create a temporary file to save the downloaded mod
 	tmpFile, err := os.CreateTemp("", fmt.Sprintf("%s-%s-%s-*.zip", mod.Author, mod.Name, mod.Version))
 	if err != nil {
 		return "", fmt.Errorf("error creating temp file: %w", err)
 	}
 	defer tmpFile.Close()
 
-	// Write the response content to the file
 	_, err = io.Copy(tmpFile, resp.Body)
 	if err != nil {
 		return "", fmt.Errorf("error writing to temp file: %w", err)
 	}
 
-	// Return the path to the downloaded file
 	return tmpFile.Name(), nil
 }

@@ -14,6 +14,7 @@ import { Toaster } from '@/components/ui/sonner'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Tab } from '@/types/uiState'
 import { GlobalModList } from './features/mod-list-global'
+import { section, type ordering } from './types/global'
 
 const App: FC = () => {
   const { isBlocked, theme, unblock } = useBlockUI('black', true)
@@ -23,8 +24,10 @@ const App: FC = () => {
   const [selectedProfile, setSelectedProfile] = useState<string | null>(null)
   const [selectedTab, setSelectedTab] = useState<Tab>('local-mods')
 
+  const [orderingState, setOrderingState] = useState<ordering>('top-rated')
+  const [sectionState, setSectionState] = useState<section>('mods')
+  const [globalQueryState, setGlobalQueryState] = useState<string>('')
   const [pageState] = useState(1)
-  const [orderingState] = useState('top-rated')
 
   useEffect(() => {
     if (!p.isLoading || p.error) {
@@ -65,7 +68,14 @@ const App: FC = () => {
             setSelectedTab={setSelectedTab}
           />
         }
-        header={<Header profile={selectedProfile} />}
+        header={
+          <Header
+            profile={selectedProfile}
+            currentTab={selectedTab}
+            setGlobalModQuery={setGlobalQueryState}
+            setLocalModQuery={() => {}}
+          />
+        }
         blocking={{ isBlocked, theme }}
       >
         <ScrollArea
@@ -95,8 +105,12 @@ const App: FC = () => {
 
           {selectedTab === 'global-mods' && (
             <GlobalModList
-              page={pageState}
+              sectionState={sectionState}
+              setSection={setSectionState}
               ordering={orderingState}
+              setOrdering={setOrderingState}
+              query={globalQueryState}
+              page={pageState}
               profile={selectedProfile}
             />
           )}

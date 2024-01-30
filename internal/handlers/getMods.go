@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"log"
 
 	mod "github.com/KonstantinBelenko/lethal-mod-manager/pkg/lcfs/mod"
@@ -70,11 +71,17 @@ func handleDeleteMod(profileName, modPathName string) (string, error) {
 	return "Mod deleted", nil
 }
 
-func handleGetGlobalMods(ordering string, page int) ([]tsapi.GlobalModView, error) {
-	mods, err := tsapi.GlobalListMods(tsapi.OrderingType(ordering), page)
+func handleGetGlobalMods(ordering string, section string, query string, page int) ([]tsapi.GlobalModView, error) {
+	mods, err := tsapi.GlobalListMods(tsapi.OrderingType(ordering), tsapi.SectionType(section), query, page)
 	if err != nil {
 		log.Printf("Error getting global mods: %v", err)
 		return nil, err
+	}
+
+	for _, mod := range mods {
+		fmt.Printf("")
+		fmt.Printf("Mod: %v", mod)
+		fmt.Printf("")
 	}
 
 	return mods, nil
@@ -85,6 +92,17 @@ func handleInstallMod(profileName, authorName, modName string) (string, error) {
 		Name:   modName,
 		Author: authorName,
 	}, func(current, total int, title string) {})
+
+	if err != nil {
+		log.Printf("Error installing mod: %v", err)
+		return "", err
+	}
+
+	return "Mod installed", nil
+}
+
+func handleInstallModFromUrl(profileName, url string) (string, error) {
+	err := mod.InstallModFromUrl(profileName, url, func(current, total int, title string) {})
 
 	if err != nil {
 		log.Printf("Error installing mod: %v", err)
