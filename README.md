@@ -4,6 +4,8 @@ The sexiest mod-manager for Lethal Company (Only for windows).
 
 ![image](https://github.com/KonstantinBelenko/lethal-mod-manager/assets/90444271/d584e916-4edc-41fa-82d0-c22d6a90095c)
 
+A mod manager built with ***Love, Care, and Golang***
+
 ## Planned Features
 
 - Automatic mod updates
