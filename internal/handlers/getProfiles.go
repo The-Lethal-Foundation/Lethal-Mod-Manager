@@ -2,13 +2,15 @@ package handlers
 
 import (
 	"fmt"
+	"path/filepath"
 
-	profile "github.com/KonstantinBelenko/lethal-mod-manager/pkg/lcfs/profile"
-	"github.com/KonstantinBelenko/lethal-mod-manager/pkg/lcfs/util"
+	"github.com/The-Lethal-Foundation/lethal-core/config"
+	"github.com/The-Lethal-Foundation/lethal-core/filesystem"
+	"github.com/The-Lethal-Foundation/lethal-core/profile"
 )
 
 func handleGetProfiles() []string {
-	_, profiles, err := profile.EnumProfiles()
+	profiles, err := profile.ListProfiles()
 	if err != nil {
 		fmt.Println(err)
 		return nil
@@ -17,19 +19,31 @@ func handleGetProfiles() []string {
 }
 
 func handleSaveLastUsedProfile(lastUsedProfile string) (string, error) {
-	config := util.Config{LastUsedProfile: lastUsedProfile}
-	if err := util.SaveConfig(config); err != nil {
-		fmt.Printf("Error saving last used profile: %v\n", err)
-		return "Error saving last used profile", err
+	// load config
+	cfg, err := config.LoadConfig(filepath.Join(filesystem.GetDefaultPath(), config.ConfigFileName))
+	if err != nil {
+		fmt.Printf("Error loading config: %v\n", err)
+		return "", err
 	}
+
+	// Update config
+	cfg.LastUsedProfile = lastUsedProfile
+	err = config.SaveConfig(filepath.Join(filesystem.GetDefaultPath(), config.ConfigFileName), cfg)
+	if err != nil {
+		fmt.Printf("Error saving config: %v\n", err)
+		return "", err
+	}
+
 	return "Last used profile saved successfully", nil
 }
 
 func handleLoadLastUsedProfile() (string, error) {
-	config, err := util.LoadConfig()
+	// load config
+	cfg, err := config.LoadConfig(filepath.Join(filesystem.GetDefaultPath(), config.ConfigFileName))
 	if err != nil {
-		fmt.Printf("Error loading last used profile: %v\n", err)
+		fmt.Printf("Error loading config: %v\n", err)
 		return "", err
 	}
-	return config.LastUsedProfile, nil
+
+	return cfg.LastUsedProfile, nil
 }

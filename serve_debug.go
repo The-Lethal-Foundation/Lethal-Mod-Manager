@@ -7,9 +7,10 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"path/filepath"
 	"strings"
 
-	"github.com/KonstantinBelenko/lethal-mod-manager/pkg/lcfs/util"
+	"github.com/The-Lethal-Foundation/lethal-core/filesystem"
 )
 
 type AppServer struct{}
@@ -23,10 +24,7 @@ func (s *AppServer) Serve() error {
 	server := http.NewServeMux()
 
 	// Replicate the file serving logic for images
-	profilesPath, err := util.GetProfilesPath()
-	if err != nil {
-		log.Fatal(err)
-	}
+	profilesPath := filepath.Join(filesystem.GetDefaultPath(), "LethalCompany", "Profiles")
 
 	fmt.Println("\n\n---------------------")
 	fmt.Println("Serving images from", profilesPath)

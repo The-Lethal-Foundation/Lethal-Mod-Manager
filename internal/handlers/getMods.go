@@ -4,9 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	mod "github.com/KonstantinBelenko/lethal-mod-manager/pkg/lcfs/mod"
-	"github.com/KonstantinBelenko/lethal-mod-manager/pkg/tsapi"
-	"github.com/KonstantinBelenko/lethal-mod-manager/pkg/types"
+	"github.com/The-Lethal-Foundation/lethal-core/api"
+	"github.com/The-Lethal-Foundation/lethal-core/modmanager"
 )
 
 type GetModsResponse struct {
@@ -18,7 +17,7 @@ type GetModsResponse struct {
 }
 
 func handleGetMods(profileName string) ([]GetModsResponse, error) {
-	_, modNames, err := mod.EnumMods(profileName)
+	modsDetails, err := modmanager.ListMods(profileName)
 	if err != nil {
 		log.Printf("Error enumerating mods: %v", err)
 		return nil, err
@@ -26,43 +25,22 @@ func handleGetMods(profileName string) ([]GetModsResponse, error) {
 
 	// Go over each mod and grab manifest if it exists
 	mods := []GetModsResponse{}
-	for _, modName := range modNames {
-		parsedModName, err := mod.LocalParseModName(modName)
-		if err != nil {
-			log.Printf("Error parsing mod name: %v", err)
-			return nil, err
-		}
-
-		hasManifest, err := mod.LocalModHasManifest(profileName, modName)
-		if err != nil {
-			log.Printf("Error checking manifest: %v", err)
-			continue
-		}
-
-		if !hasManifest {
-			continue
-		}
-
-		manifest, err := mod.LocalGetModManifest(profileName, modName)
-		if err != nil {
-			log.Printf("Error getting manifest: %v", err)
-			return nil, err
-		}
+	for _, modDetails := range modsDetails {
 
 		mods = append(mods, GetModsResponse{
-			ModName:        manifest.Name,
-			ModAuthor:      parsedModName.Author,
-			ModVersion:     manifest.VersionNumber,
-			ModDescription: manifest.Description,
-			ModPathName:    modName,
+			ModName:        modDetails.Manifest.Name,
+			ModAuthor:      modDetails.Author,
+			ModVersion:     modDetails.Manifest.Version,
+			ModDescription: modDetails.Manifest.Description,
+			ModPathName:    modDetails.ModDirName,
 		})
 	}
 
 	return mods, nil
 }
 
-func handleDeleteMod(profileName, modPathName string) (string, error) {
-	err := mod.DeleteMod(profileName, modPathName)
+func handleDeleteMod(profileName, modDirName string) (string, error) {
+	err := modmanager.DeleteMod(profileName, modDirName)
 	if err != nil {
 		log.Printf("Error deleting mod: %v", err)
 		return "", err
@@ -71,8 +49,8 @@ func handleDeleteMod(profileName, modPathName string) (string, error) {
 	return "Mod deleted", nil
 }
 
-func handleGetGlobalMods(ordering string, section string, query string, page int) ([]tsapi.GlobalModView, error) {
-	mods, err := tsapi.GlobalListMods(tsapi.OrderingType(ordering), tsapi.SectionType(section), query, page)
+func handleGetGlobalMods(ordering string, section string, query string, page int) ([]api.GlobalModView, error) {
+	mods, err := api.GlobalListMods(api.OrderingType(ordering), api.SectionType(section), query, page)
 	if err != nil {
 		log.Printf("Error getting global mods: %v", err)
 		return nil, err
@@ -88,11 +66,7 @@ func handleGetGlobalMods(ordering string, section string, query string, page int
 }
 
 func handleInstallMod(profileName, authorName, modName string) (string, error) {
-	err := mod.InstallMod(profileName, types.ModName{
-		Name:   modName,
-		Author: authorName,
-	}, func(current, total int, title string) {})
-
+	err := modmanager.InstallMod(profileName, authorName, modName)
 	if err != nil {
 		log.Printf("Error installing mod: %v", err)
 		return "", err
@@ -102,7 +76,7 @@ func handleInstallMod(profileName, authorName, modName string) (string, error) {
 }
 
 func handleInstallModFromUrl(profileName, url string) (string, error) {
-	err := mod.InstallModFromUrl(profileName, url, func(current, total int, title string) {})
+	err := modmanager.InstallModFromUrl(profileName, url)
 
 	if err != nil {
 		log.Printf("Error installing mod: %v", err)

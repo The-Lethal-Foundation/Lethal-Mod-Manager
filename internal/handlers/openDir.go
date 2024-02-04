@@ -2,19 +2,17 @@ package handlers
 
 import (
 	"os/exec"
+	"path/filepath"
 
-	"github.com/KonstantinBelenko/lethal-mod-manager/pkg/lcfs/util"
+	"github.com/The-Lethal-Foundation/lethal-core/filesystem"
 )
 
 func handleOpenModDir(profile, modPathName string) (string, error) {
 
-	profileMods, err := util.GetModsPath(profile)
-	if err != nil {
-		return "", err
-	}
+	modFullPath := filepath.Join(filesystem.GetDefaultPath(), "LethalCompany", "Profiles", profile, "BepInEx", "plugins", modPathName)
 
-	cmd := exec.Command("explorer", profileMods+"\\"+modPathName)
-	err = cmd.Run()
+	cmd := exec.Command("explorer", modFullPath)
+	_ = cmd.Run()
 
 	return "Mod directory opened", nil
 }

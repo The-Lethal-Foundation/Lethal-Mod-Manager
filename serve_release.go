@@ -5,11 +5,11 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net"
 	"net/http"
+	"path/filepath"
 
-	"github.com/KonstantinBelenko/lethal-mod-manager/pkg/lcfs/util"
+	"github.com/The-Lethal-Foundation/lethal-core/filesystem"
 )
 
 type AppServer struct {
@@ -29,10 +29,7 @@ func (s *AppServer) Serve() error {
 	s.ln = ln
 	server := http.NewServeMux()
 
-	profilesPath, err := util.GetProfilesPath()
-	if err != nil {
-		log.Fatal(err)
-	}
+	profilesPath := filepath.Join(filesystem.GetDefaultPath(), "LethalCompany", "Profiles")
 
 	server.Handle("/images/", http.StripPrefix("/images/", http.FileServer(http.Dir(profilesPath))))
 	server.Handle("/", http.StripPrefix("/", http.FileServer(FS)))
