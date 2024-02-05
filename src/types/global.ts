@@ -33,5 +33,9 @@ declare global {
     getProfiles: () => Promise<string[]>
     saveLastUsedProfile: (lastUsedProfile: string) => Promise<string>
     loadLastUsedProfile: () => Promise<string>
+    renameProfile: (
+      oldProfileName: string,
+      newProfileName: string,
+    ) => Promise<string>
   }
 }

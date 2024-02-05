@@ -70,7 +70,9 @@ const App: FC = () => {
         }
         header={
           <Header
-            profile={selectedProfile}
+            selectedProfile={selectedProfile}
+            setSelectedProfile={setSelectedProfile}
+            refetchProfiles={p.fetchProfiles}
             currentTab={selectedTab}
             setGlobalModQuery={setGlobalQueryState}
             setLocalModQuery={() => {}}

@@ -47,3 +47,12 @@ func handleLoadLastUsedProfile() (string, error) {
 
 	return cfg.LastUsedProfile, nil
 }
+
+func handleRenameProfile(oldName, newName string) (string, error) {
+	err := profile.RenameProfile(oldName, newName)
+	if err != nil {
+		fmt.Printf("Error renaming profile: %v\n", err)
+		return "", err
+	}
+	return "Profile renamed successfully", nil
+}

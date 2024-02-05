@@ -13,11 +13,9 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { FolderIcon, Trash2Icon } from 'lucide-react'
+import { FolderIcon, LinkIcon, Trash2Icon } from 'lucide-react'
 import { toast } from 'sonner'
 import {
   AlertDialog,
@@ -48,6 +46,12 @@ export const ModCard: FC<ModCardProps> = ({
     return null
   }
 
+  const visitMod = () => {
+    window.open(
+      `https://thunderstore.io/c/lethal-company/p/${mod.mod_author}/${mod.mod_name.replace(/\s/g, '_')}`,
+    )
+  }
+
   const openModFolder = () => {
     window
       .openModDir(profile, mod.mod_path_name)
@@ -74,7 +78,7 @@ export const ModCard: FC<ModCardProps> = ({
   return (
     <>
       <AlertDialog>
-        <AlertDialogContent>
+        <AlertDialogContent className="bg-black text-white border-[#27272a]">
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
@@ -83,7 +87,7 @@ export const ModCard: FC<ModCardProps> = ({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel className="text-black">Cancel</AlertDialogCancel>
             <AlertDialogAction onClick={deleteMod}>
               Delete mod
             </AlertDialogAction>
@@ -92,15 +96,19 @@ export const ModCard: FC<ModCardProps> = ({
 
         <DropdownMenu>
           <DropdownMenuContent>
-            <DropdownMenuLabel>Mod action</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-
             <DropdownMenuItem
               className="hover:cursor-pointer"
               onClick={openModFolder}
             >
               <FolderIcon className="mr-2 h-4 w-4" />
               Open folder
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className="hover:cursor-pointer"
+              onClick={visitMod}
+            >
+              <LinkIcon className="w-4 h-4 mr-2" />
+              Visit
             </DropdownMenuItem>
             <AlertDialogTrigger className="w-full">
               <DropdownMenuItem className="hover:cursor-pointer">
@@ -119,7 +127,9 @@ export const ModCard: FC<ModCardProps> = ({
                 />
               </CardHeader>
               <CardContent>
-                <CardTitle className="text-white">{mod.mod_name}</CardTitle>
+                <CardTitle className="text-white truncate">
+                  {mod.mod_name}
+                </CardTitle>
                 <CardDescription className="truncate text-xs mt-1">
                   By {mod.mod_author} • {mod.mod_version}
                 </CardDescription>

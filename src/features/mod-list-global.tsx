@@ -10,7 +10,6 @@ import {
   SelectItem,
   SelectLabel,
   SelectTrigger,
-  SelectValue,
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
@@ -99,7 +98,7 @@ const GlobalModList: React.FC<GlobalModListProps> = ({
           }}
         >
           <SelectTrigger className="w-[180px] text-white">
-            <SelectValue placeholder="Select section" />
+            {sectionState.charAt(0).toUpperCase() + sectionState.slice(1)}
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>

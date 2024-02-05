@@ -13,8 +13,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { DownloadIcon, LinkIcon } from 'lucide-react'
@@ -68,9 +66,6 @@ export const GlobalModCard: FC<GlobalModCardProps> = ({
     <>
       <DropdownMenu>
         <DropdownMenuContent>
-          <DropdownMenuLabel>Mod action</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-
           <DropdownMenuItem
             className="hover:cursor-pointer"
             onClick={installMod}
@@ -94,7 +89,9 @@ export const GlobalModCard: FC<GlobalModCardProps> = ({
               />
             </CardHeader>
             <CardContent>
-              <CardTitle className="text-white">{mod.mod_name}</CardTitle>
+              <CardTitle className="text-white truncate">
+                {mod.mod_name}
+              </CardTitle>
               <CardDescription className="truncate text-xs mt-1">
                 By {mod.mod_author}
               </CardDescription>

@@ -44,7 +44,7 @@ export function ProfileSelect({
           variant="default"
           role="combobox"
           aria-expanded={open}
-          className="w-[240px] justify-between"
+          className="min-w-[75%] max-w-[75%] justify-between hover:bg-[#27272a]"
         >
           {value
             ? profiles.find((profile) => profile.value === value)?.label
@@ -52,7 +52,7 @@ export function ProfileSelect({
           <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[240px] p-0">
+      <PopoverContent className="w-[185px] p-0">
         <Command>
           <CommandInput placeholder="Search profile..." className="h-9" />
           <CommandEmpty
