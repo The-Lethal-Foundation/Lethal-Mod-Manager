@@ -2,7 +2,7 @@
 
 The sexiest mod-manager for Lethal Company (Only for windows).
 
-![image](https://github.com/KonstantinBelenko/lethal-mod-manager/assets/90444271/d584e916-4edc-41fa-82d0-c22d6a90095c)
+![image](https://github.com/The-Lethal-Foundation/Lethal-Mod-Manager/assets/90444271/4d3cf411-d657-433c-b973-8bdf180fa41c)
 
 A mod manager built with ***Love, Care, and Golang***
 
