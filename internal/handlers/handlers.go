@@ -26,4 +26,5 @@ func SetupHandlers(ui lorca.UI, addr string) {
 	ui.Bind("saveLastUsedProfile", handleSaveLastUsedProfile)
 	ui.Bind("loadLastUsedProfile", handleLoadLastUsedProfile)
 	ui.Bind("renameProfile", handleRenameProfile)
+	ui.Bind("deleteProfile", handleDeleteProfile)
 }

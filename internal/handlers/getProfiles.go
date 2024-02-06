@@ -56,3 +56,12 @@ func handleRenameProfile(oldName, newName string) (string, error) {
 	}
 	return "Profile renamed successfully", nil
 }
+
+func handleDeleteProfile(profileName string) (string, error) {
+	err := profile.DeleteProfile(profileName)
+	if err != nil {
+		fmt.Printf("Error deleting profile: %v\n", err)
+		return "", err
+	}
+	return "Profile deleted successfully", nil
+}
