@@ -15,8 +15,9 @@ import { toast } from 'sonner'
 
 interface SidebarProps {
   profiles: { label: string; value: string }[]
-  setProfile: (profile: string | null) => void
   profile: string | null
+  setProfile: (profile: string | null) => void
+  refetchProfiles: () => void
   selectedTab?: Tab
   setSelectedTab?: (tab: Tab) => void
 }
@@ -27,6 +28,7 @@ const Sidebar: FC<SidebarProps> = ({
   profile,
   profiles,
   setProfile,
+  refetchProfiles,
 }) => {
   const [isLoadingGame, setLoadingGame] = useState(false)
 
@@ -74,8 +76,9 @@ const Sidebar: FC<SidebarProps> = ({
             <div className="flex justify-between gap-2 min-w-full">
               <ProfileSelect
                 profiles={profiles}
-                setProfile={setProfile}
                 profile={profile}
+                setProfile={setProfile}
+                refetchProfiles={refetchProfiles}
               />
               <Button
                 className="bg-[#4BC732] hover:bg-[#6BD420] border-none text-white hover:text-white"

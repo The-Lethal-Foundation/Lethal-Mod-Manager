@@ -38,5 +38,6 @@ declare global {
       newProfileName: string,
     ) => Promise<string>
     deleteProfile: (profileName: string) => Promise<string>
+    createProfile: (profileName: string) => Promise<string>
   }
 }

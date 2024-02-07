@@ -15,17 +15,20 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { PlusCircle } from 'lucide-react'
 
 interface ProfileSelectProps {
   profiles: { label: string; value: string }[]
   profile: string | null
   setProfile: (profile: string | null) => void
+  refetchProfiles: () => void
 }
 
 export function ProfileSelect({
   profiles,
-  setProfile,
   profile,
+  setProfile,
+  refetchProfiles,
 }: ProfileSelectProps) {
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState('')
@@ -36,6 +39,17 @@ export function ProfileSelect({
       window.saveLastUsedProfile(profile)
     }
   }, [profile])
+
+  const createNewProfile = () => {
+    const profileName = window.prompt('Enter a name for the new profile')
+    if (!profileName) return
+
+    window.createProfile(profileName).then(() => {
+      refetchProfiles()
+      setValue(profileName)
+      setProfile(profileName)
+    })
+  }
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -55,6 +69,15 @@ export function ProfileSelect({
       <PopoverContent className="w-[185px] p-0">
         <Command>
           <CommandInput placeholder="Search profile..." className="h-9" />
+          <CommandItem className="flex h-full items-center border-b px-3 py-1 bg-gray-50 hover:cursor-pointer hover:opacity-80 duration-300">
+            <span
+              className="flex items-center h-full"
+              onClick={createNewProfile}
+            >
+              <PlusCircle className="mr-2 h-3.5 w-3.5" />
+              New Profile
+            </span>
+          </CommandItem>
           <CommandEmpty
             firstRender
             className="flex flex-col gap-4 items-center"

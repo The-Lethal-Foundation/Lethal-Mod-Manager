@@ -62,8 +62,9 @@ const App: FC = () => {
         sidebar={
           <Sidebar
             profiles={p.profiles}
-            setProfile={setSelectedProfile}
             profile={selectedProfile}
+            setProfile={setSelectedProfile}
+            refetchProfiles={p.fetchProfiles}
             selectedTab={selectedTab}
             setSelectedTab={setSelectedTab}
           />

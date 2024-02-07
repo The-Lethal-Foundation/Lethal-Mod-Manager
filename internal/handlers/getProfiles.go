@@ -65,3 +65,12 @@ func handleDeleteProfile(profileName string) (string, error) {
 	}
 	return "Profile deleted successfully", nil
 }
+
+func handleCreateProfile(profileName string) (string, error) {
+	err := profile.CreateProfile(profileName)
+	if err != nil {
+		fmt.Printf("Error creating profile: %v\n", err)
+		return "", err
+	}
+	return "Profile created successfully", nil
+}
